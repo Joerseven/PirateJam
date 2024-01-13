@@ -25,13 +25,13 @@ public class PlayerMovement : MonoBehaviour
     private void Move_performed(InputAction.CallbackContext context)
     {
         Vector2 inputValue = context.ReadValue<Vector2>();
-        rb.AddForce(inputValue * movementSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
+        rb.AddForce(inputValue * (movementSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         Vector2 inputValue = playerControls.Player.Move.ReadValue<Vector2>();
-        rb.AddForce(inputValue * movementSpeed * Time.fixedDeltaTime, ForceMode2D.Impulse);
+        rb.AddForce(inputValue * (movementSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
 }
