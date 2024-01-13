@@ -185,7 +185,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 14.477994
+  orthographic size: 6.8443084
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -373,19 +373,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1484139760}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 2143b1d1-9915-46ae-b1c4-055e846eae01
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -440,6 +428,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ae9facce-cf05-42d2-a31a-c6b77e3c7587
     m_ActionName: Player/Dodge
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bda4c036-d390-4137-86f6-b86a3437f934
+    m_ActionName: Player/DirectionalAttack[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -457,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f1a384740ad534a86571d165da011a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 1
+  movementSpeed: 20
 --- !u!50 &1484139761
 Rigidbody2D:
   serializedVersion: 4
@@ -471,7 +463,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
