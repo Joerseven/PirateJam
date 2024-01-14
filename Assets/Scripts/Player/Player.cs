@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        hurtbox = GetComponentInChildren<Hurtbox>();
+        hurtbox = GetComponentInChildren<Hurtbox>(true);
         hurtbox.gameObject.SetActive(false);
 
         playerControls = new PlayerControls();
@@ -103,8 +103,6 @@ public class Player : MonoBehaviour
         {
             enemy.ReceiveSlash(swingDirection);
         }
-        
-        print(swingDirection);
     }
 
     // Update is called once per frame
