@@ -43,7 +43,6 @@ public class Player : MonoBehaviour
         playerControls.Player.Enable();
         
         
-        
     }
 
     private void Start()
