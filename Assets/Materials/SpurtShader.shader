@@ -49,6 +49,7 @@ Shader "Unlit/SpurtShader"
             float4 particlePos[50];
             float elapsed;
             float3 targetCell;
+            float cellArea;
 
             v2f vert (appdata v)
             {
@@ -64,16 +65,16 @@ Shader "Unlit/SpurtShader"
             {
                 float4 pixelVal = {0,0,0,0};
                 
-                for (uint p=0; p<50; p++)
+                for (float p=0; p<50; p++)
                 {
-
-                    float dis = 1 / (length(i.worldPos.xy - particlePos[p].xy) * _Thick);
+                    float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick);
                     pixelVal += dis;
+                    p += 3 - cellArea;
                     
                 }
                 //pixelVal.xyz = smoothstep(0.06, 0.07, pixelVal.x) * _Color;
                 //pixelVal.w = step(0.1, pixelVal.x);
-                float4 steppedDf = step(0.8, pixelVal.x) * _Color;
+                float4 steppedDf = step(0.8, pixelVal.x) * 1;
                 fixed4 col = steppedDf;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
