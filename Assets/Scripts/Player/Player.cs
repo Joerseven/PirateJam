@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     }
     
     [SerializeField] private float movementSpeed = 10.0f;
+    [SerializeField] private float dodgeSpeed = 10.0f;
     
     private PlayerControls playerControls;
     private InputAction swipePosition; 
@@ -54,7 +55,9 @@ public class Player : MonoBehaviour
         // This is working off the resolution rather than a normalised coordinate :/
         fireButton.performed += _ => { swipeStart = swipePosition.ReadValue<Vector2>(); };
         fireButton.canceled += _ => { FinishSwipe(); };
-        
+
+        playerControls.Player.Dodge.performed += Dodge;
+
     }
     
     private void Update()
@@ -89,10 +92,21 @@ public class Player : MonoBehaviour
     {
         swordSwinging = true;
         hurtbox.gameObject.SetActive(true);
+        hurtbox.gameObject.transform.SetPositionAndRotation(rb.position + new Vector2(inputValue.x * .5f, inputValue.y * .5f), Quaternion.identity);
+        
         yield return new WaitForSeconds(0.2f);
         hurtbox.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         swordSwinging = false;
+    }
+
+    private void PlayerFacingDirection()
+    {
+        bool playerHasVerticalMovement = rb.velocity.y > Mathf.Epsilon;
+        bool playerHasHorizontalMovement = rb.velocity.x > Mathf.Epsilon;
+        
+
+
     }
 
     private void SwordHit(Collider2D collidedWith)
@@ -109,4 +123,24 @@ public class Player : MonoBehaviour
     {
         rb.AddForce(inputValue * (movementSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
+
+    private void Dodge(InputAction.CallbackContext context)
+    {
+        rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+    }
+    
+
+
 }
+
+
+
+
+    /* Save this function for later - This is the basis for moving the weapon hitbox relative to the mouse position. OT
+     * 
+    private void MouseFollowWithOffset()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 playerScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+    }
+     */
