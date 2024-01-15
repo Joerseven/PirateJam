@@ -83,12 +83,12 @@ public class Spurt : MonoBehaviour
             float yRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.2f;
             
             
-            float distanceSpread = i / (float)PARTICLECOUNT;
+            float spreadTValue = i / (float)PARTICLECOUNT;
             
-            float spreadModifier = Random.Range(-0.15f, 0.15f) * (distanceSpread + 0.05f);
+            float spreadModifier = Random.Range(-0.15f, 0.15f) * (spreadTValue + 0.05f);
             
-            particleTargets[i] = new Vector4(originPosition.x + xRand + cellDelta.x * distanceSpread + spreadModifier * cellDelta.y, 
-                                            originPosition.y + yRand + cellDelta.y * distanceSpread + spreadModifier * cellDelta.x,
+            particleTargets[i] = new Vector4(originPosition.x + xRand + cellDelta.x * spreadTValue + spreadModifier * cellDelta.y, 
+                                            originPosition.y + yRand + cellDelta.y * spreadTValue + spreadModifier * cellDelta.x,
                                             0, 0);
             
         }
