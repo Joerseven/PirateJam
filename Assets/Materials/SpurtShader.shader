@@ -67,15 +67,20 @@ Shader "Unlit/SpurtShader"
                 
                 for (float p=0; p<50; p++)
                 {
+                    float fVal = (3 - cellArea) * 0.6;
                     float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick);
                     pixelVal += dis;
-                    p += 3 - cellArea;
+                    p += fVal;
                     
                 }
                 //pixelVal.xyz = smoothstep(0.06, 0.07, pixelVal.x) * _Color;
                 //pixelVal.w = step(0.1, pixelVal.x);
-                float4 steppedDf = step(0.8, pixelVal.x) * 1;
-                fixed4 col = steppedDf;
+                float4 steppedDf = step(0.8, pixelVal.x);
+                float4 edgeDf = step(0.77, pixelVal.x);
+                edgeDf = edgeDf - steppedDf;
+                
+                
+                fixed4 col = steppedDf * _Color + edgeDf * float4(0,0,0,1);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
