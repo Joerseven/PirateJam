@@ -6,13 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class initializeGame : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private AudioManager audioManagerCache;
+    
+    void Awake()
     {
-        Debug.Log("Holy shit");
+        audioManagerCache = FindObjectOfType<AudioManager>();
+        if(audioManagerCache == null) {
+            Debug.LogError("Audio manager is NULL. Check Audio manager init.");
+            }
+        audioManagerCache.StartMainMenuMusic();
+       
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
         
@@ -25,6 +31,8 @@ public class initializeGame : MonoBehaviour
     public void InitMainGame()
     {
         SceneManager.LoadScene("GameLoop");
+        audioManagerCache.StartGameMusic();
+        
     }
     
     
