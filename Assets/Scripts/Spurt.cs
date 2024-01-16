@@ -1,6 +1,7 @@
 using System.Collections;
 using Array = System.Array;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 
@@ -15,6 +16,7 @@ public class Spurt : MonoBehaviour
     private Grid grid;
     private SpriteRenderer sprite;
     private Vector2Int levelSize;
+    private LevelManager level;
 
     private float elapsed;
     
@@ -29,7 +31,8 @@ public class Spurt : MonoBehaviour
     void Start()
     {
         grid = GetComponentInParent<Grid>();
-        levelSize = GetComponentInParent<LevelManager>().size;
+        level = GetComponentInParent<LevelManager>();
+        levelSize = level.size;
         sprite = GetComponent<SpriteRenderer>();
         
         originCell = grid.WorldToCell(transform.position);
@@ -54,6 +57,7 @@ public class Spurt : MonoBehaviour
     {
         ResizeSpurt(direction);
         AnimateSpurt();
+        RegisterSpurtOnLevel();
     }
 
     private void ResizeSpurt(Vector2 direction)
@@ -68,6 +72,11 @@ public class Spurt : MonoBehaviour
             scaleFactor.z * transform.localScale.z);
         
         transform.position += (Vector3)cellDelta / 2.0f;
+    }
+
+    private void RegisterSpurtOnLevel()
+    {
+        level.AddSpurtToLevel(originCell, targetCell);
     }
 
     // Don't touch this code. I don't understand it and I wrote it. 
@@ -119,8 +128,8 @@ public class Spurt : MonoBehaviour
             origin.y + levelSize.y * (int)direction.y, 
             0);
 
-        furthestPossibleCell.Clamp(new Vector3Int(levelSize.x / -2, levelSize.y / -2, 0),
-            new Vector3Int(levelSize.x / 2, levelSize.y / 2, 0));
+        furthestPossibleCell.Clamp(new Vector3Int(0, 0, 0),
+            new Vector3Int(levelSize.x - 1, levelSize.y - 1, 0));
         
         // TODO: Add here a loop that calls another function to go along the line until it meets an invalid cell.
         // Unneeded at the moment because it's just a square with no obstacles.
