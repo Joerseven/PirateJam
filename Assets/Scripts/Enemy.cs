@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
 
     private Grid grid;
     
-
     private Spurt spurt;
     // Start is called before the first frame update
     void Start()
