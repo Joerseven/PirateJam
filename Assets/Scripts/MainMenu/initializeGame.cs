@@ -41,7 +41,6 @@ public class initializeGame : MonoBehaviour
     
     public void ViewCredits()
     {
-        Debug.Log("Buton Pressed");
         animator.SetTrigger("ViewCredits");
     }
     
