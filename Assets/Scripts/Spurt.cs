@@ -114,6 +114,7 @@ public class Spurt : MonoBehaviour
         materialProperty.SetFloat("elapsed", elapsed);
         materialProperty.SetVector("targetCell", (Vector3)targetCell);
         materialProperty.SetFloat("cellArea", cellArea);
+        materialProperty.SetVector("originPos", originPosition);
         sprite.SetPropertyBlock(materialProperty);
 
         elapsed = 0;
