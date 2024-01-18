@@ -19,8 +19,14 @@ public class ButterActions : MonoBehaviour
     
     private void Start()
     {
-        hasChargeAvailable = true;
+        hasChargeAvailable = false;
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void InitButter(GameObject t)
+    {
+        target = t;
+        hasChargeAvailable = true;
     }
 
   
@@ -30,12 +36,6 @@ public class ButterActions : MonoBehaviour
         {
             StartCoroutine(Charge());
         }
-        // else
-        // {
-        //     Roam();
-        // }
-        
-        
     }
 
     private Vector2 FindPlayer()
