@@ -24,6 +24,15 @@ public class Shooter : MonoBehaviour, IEnemy
 
     private void Update()
     {
+        if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
+        {
+            Vector3 targetPos = Player.Instance.transform.position;
+            Vector3 enemyPos = transform.position;
+            targetPos.x = targetPos.x - enemyPos.x;
+            targetPos.y = targetPos.y - enemyPos.y;
+            float angle = Mathf.Atan2(targetPos.x, targetPos.y) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+        }
         Attack();
     }
 
@@ -36,5 +45,4 @@ public class Shooter : MonoBehaviour, IEnemy
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }
-
 }
