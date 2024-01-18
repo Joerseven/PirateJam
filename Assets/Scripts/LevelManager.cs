@@ -42,6 +42,12 @@ public class LevelManager : MonoBehaviour
         {
             e.OnEnemyDeath.AddListener(CheckEnd);
         }
+
+        var butters = GetComponentsInChildren<ButterActions>().ToList();
+        foreach (var b in butters)
+        {
+            b.InitButter(GetComponentInChildren<Player>().gameObject);
+        }
     }
 
     // Update is called once per frame
