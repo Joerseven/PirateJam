@@ -4,7 +4,6 @@ using UnityEngine;
 
 //<summary>
 //Class to manager Audio for the entirety of the game.
-//TODO: ADD DO NOT DESTORY ON LOAD TO PERSIST
 //TODO: Add player sound effects 
 //TODO: Change the sound effects and music to the final songs and sounds
 //</summary>
