@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     }
     
     [SerializeField] private float movementSpeed = 10.0f;
+    [SerializeField] private float dodgeSpeed = 10.0f;
     
     private PlayerControls playerControls;
     private InputAction swipePosition; 
@@ -32,6 +33,12 @@ public class Player : MonoBehaviour
     private Vector2 swipeStart;
 
     private Vector2 swingDirection;
+    
+    //Temp for testing
+    bool playerMovingUp;
+    bool playerMovingRight;
+    bool playerMovingDown;
+    bool playerMovingLeft;
 
     private void Awake()
     {
@@ -55,12 +62,16 @@ public class Player : MonoBehaviour
         // This is working off the resolution rather than a normalised coordinate :/
         fireButton.performed += _ => { swipeStart = swipePosition.ReadValue<Vector2>(); };
         fireButton.canceled += _ => { FinishSwipe(); };
-        
+
+        playerControls.Player.Dodge.performed += Dodge;
+
     }
     
     private void Update()
     {
         inputValue = playerControls.Player.Move.ReadValue<Vector2>();
+
+        
     }
 
     private void FinishSwipe()
@@ -90,6 +101,9 @@ public class Player : MonoBehaviour
     {
         swordSwinging = true;
         hurtbox.gameObject.SetActive(true);
+        
+        //Moves the players hurtbox to up, down, left and right of the player's rigid body - Needs to stay relative to the direction the player is facing.
+        
         yield return new WaitForSeconds(0.2f);
         hurtbox.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
@@ -98,7 +112,6 @@ public class Player : MonoBehaviour
 
     private void SwordHit(Collider2D collidedWith)
     {
-
         if (collidedWith.TryGetComponent<Enemy>(out var enemy))
         {
             enemy.ReceiveSlash(swingDirection);
@@ -109,5 +122,28 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         rb.AddForce(inputValue * (movementSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+        if (inputValue != new Vector2(0, 0))
+        {
+            hurtbox.gameObject.transform.SetPositionAndRotation(rb.position + new Vector2(inputValue.x * .5f, inputValue.y * .5f), Quaternion.identity);
+            
+        }
+
+    }
+
+    private void Dodge(InputAction.CallbackContext context)
+    {
+        rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
 }
+
+
+
+
+    /* Save this function for later - This is the basis for moving the weapon hitbox relative to the mouse position. OT
+     * 
+    private void MouseFollowWithOffset()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 playerScreenPos = Camera.main.WorldToScreenPoint(transform.position);
+    }
+     */

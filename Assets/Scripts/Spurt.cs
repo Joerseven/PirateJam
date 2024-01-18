@@ -1,6 +1,7 @@
 using System.Collections;
 using Array = System.Array;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 
@@ -15,6 +16,7 @@ public class Spurt : MonoBehaviour
     private Grid grid;
     private SpriteRenderer sprite;
     private Vector2Int levelSize;
+    private LevelManager level;
 
     private float elapsed;
     
@@ -29,7 +31,8 @@ public class Spurt : MonoBehaviour
     void Start()
     {
         grid = GetComponentInParent<Grid>();
-        levelSize = GetComponentInParent<LevelManager>().size;
+        level = GetComponentInParent<LevelManager>();
+        levelSize = level.size;
         sprite = GetComponent<SpriteRenderer>();
         
         originCell = grid.WorldToCell(transform.position);
@@ -54,6 +57,7 @@ public class Spurt : MonoBehaviour
     {
         ResizeSpurt(direction);
         AnimateSpurt();
+        RegisterSpurtOnLevel();
     }
 
     private void ResizeSpurt(Vector2 direction)
@@ -70,25 +74,35 @@ public class Spurt : MonoBehaviour
         transform.position += (Vector3)cellDelta / 2.0f;
     }
 
+    private void RegisterSpurtOnLevel()
+    {
+        level.AddSpurtToLevel(originCell, targetCell);
+    }
+
     // Don't touch this code. I don't understand it and I wrote it. 
     private void AnimateSpurt()
     {
 
         particleTargets = new Vector4[PARTICLECOUNT];
-        print(cellDelta);
+        var cellArea = 1 + cellDelta.magnitude;
+        var maxDistance = grid.CellToWorld(targetCell) - originPosition;
+        print(cellArea);
 
         for (int i = 0; i < PARTICLECOUNT; i++)
         {
-            float xRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.2f;
-            float yRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.2f;
+            float xRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.15f;
+            float yRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.15f;
             
             
             float spreadTValue = i / (float)PARTICLECOUNT;
+            Vector3 addOn = cellDelta.normalized * 0.35f;
             
-            float spreadModifier = Random.Range(-0.15f, 0.15f) * (spreadTValue + 0.05f);
+            float distanceSpreadModifier = Random.Range(-0.2f, 0.2f) * (spreadTValue);
+
             
-            particleTargets[i] = new Vector4(originPosition.x + xRand + cellDelta.x * spreadTValue + spreadModifier * cellDelta.y, 
-                                            originPosition.y + yRand + cellDelta.y * spreadTValue + spreadModifier * cellDelta.x,
+            
+            particleTargets[i] = new Vector4(originPosition.x + xRand + (cellDelta.x + addOn.x) * (spreadTValue) + distanceSpreadModifier * cellDelta.y, 
+                                            originPosition.y + yRand + (cellDelta.y + addOn.y) * (spreadTValue) + distanceSpreadModifier * cellDelta.x,
                                             0, 0);
             
         }
@@ -99,6 +113,7 @@ public class Spurt : MonoBehaviour
         materialProperty.SetVectorArray("particlePos", particleTargets);
         materialProperty.SetFloat("elapsed", elapsed);
         materialProperty.SetVector("targetCell", (Vector3)targetCell);
+        materialProperty.SetFloat("cellArea", cellArea);
         sprite.SetPropertyBlock(materialProperty);
 
         elapsed = 0;
@@ -113,8 +128,8 @@ public class Spurt : MonoBehaviour
             origin.y + levelSize.y * (int)direction.y, 
             0);
 
-        furthestPossibleCell.Clamp(new Vector3Int(levelSize.x / -2, levelSize.y / -2, 0),
-            new Vector3Int(levelSize.x / 2, levelSize.y / 2, 0));
+        furthestPossibleCell.Clamp(new Vector3Int(0, 0, 0),
+            new Vector3Int(levelSize.x - 1, levelSize.y - 1, 0));
         
         // TODO: Add here a loop that calls another function to go along the line until it meets an invalid cell.
         // Unneeded at the moment because it's just a square with no obstacles.
