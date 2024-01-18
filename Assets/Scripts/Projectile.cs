@@ -28,6 +28,6 @@ public class Projectile : MonoBehaviour
 
     private void MoveProjectile()
     {
-        transform.Translate(Vector3.right * (projectileSpeed * Time.fixedDeltaTime));
+        transform.Translate(Vector3.right * (projectileSpeed * Time.deltaTime));
     }
 }
