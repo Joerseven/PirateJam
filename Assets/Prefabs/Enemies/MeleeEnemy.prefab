@@ -288,3 +288,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: becd5e0824b052b449ab5ad036666694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  splurtColor: {r: 0.92549026, g: 0.8862746, b: 0.627451, a: 0}
