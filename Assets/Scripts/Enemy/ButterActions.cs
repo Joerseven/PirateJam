@@ -12,6 +12,8 @@ public class ButterActions : MonoBehaviour
     [SerializeField] private GameObject target;
     [SerializeField] private float chargeSpeed;
     [SerializeField] private float chargeCooldown;
+
+    private Enemy enemyBase;
     
     private Rigidbody2D _rb;
 
@@ -37,6 +39,8 @@ public class ButterActions : MonoBehaviour
     {
         grid = GetComponentInParent<Grid>();
         _rb = GetComponent<Rigidbody2D>();
+        enemyBase = GetComponent<Enemy>();
+        enemyBase.CanDamage += IsDamageable;
     }
 
     public void InitButter(GameObject t)
@@ -44,11 +48,22 @@ public class ButterActions : MonoBehaviour
         target = t;
     }
 
+    public bool IsDamageable()
+    {
+        if (state == ButterState.Charging) return false;
+        return true;
+    }
+
   
     private void Update()
     {
         enemyPositionOnGrid = grid.WorldToCell(transform.position);
         playerPositionOnGrid = grid.WorldToCell(target.transform.position);
+        
+        if (enemyBase.IsDead)
+        {
+            return;
+        }
 
         if (state == ButterState.Searching)
         {
@@ -75,7 +90,7 @@ public class ButterActions : MonoBehaviour
             }
             
             var distanceVec = gridTarget - originPos;
-            var deltaVec = tValue * tValue * tValue * distanceVec;
+            var deltaVec =  (1 - Mathf.Pow(1 - tValue, 3)) * distanceVec;
             transform.position = originPos + deltaVec;
             
             delta += Time.deltaTime;
@@ -96,7 +111,6 @@ public class ButterActions : MonoBehaviour
     private Vector2 FindPlayer()
     {
         return (target.transform.position - transform.position).normalized;
-
     }
     
     

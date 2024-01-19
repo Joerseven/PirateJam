@@ -199,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyProjectilePrefab: {fileID: 7997931106405942584, guid: 1aed35f2e9e244c46bab05bfae60ae77, type: 3}
   projectileSpawnPoint: {fileID: 5309773918324496036}
-  attackRange: 5
+  attackRange: 2
   attackCooldown: 2
 --- !u!1 &4537224300904312259
 GameObject:
