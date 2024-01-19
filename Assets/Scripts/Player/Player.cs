@@ -9,7 +9,7 @@ using UnityEngine.SearchService;
 
 public class Player : MonoBehaviour
 {
-
+    public static Player Instance;
     public enum Direction
     {
         Up,
@@ -21,35 +21,31 @@ public class Player : MonoBehaviour
     [SerializeField] private float movementSpeed = 10.0f;
     [SerializeField] private float dodgeSpeed = 10.0f;
     
+    private Rigidbody2D rb;
+    private Knockback knockback;
+    
+    
     private PlayerControls playerControls;
-    private InputAction swipePosition; 
     private Vector2 inputValue;
 
     private bool swordSwinging;
-    
-    private Rigidbody2D rb;
-
-    private Hurtbox hurtbox;
+    private InputAction swipePosition; 
     private Vector2 swipeStart;
-
     private Vector2 swingDirection;
+    private Hurtbox hurtbox;
     
-    //Temp for testing
-    bool playerMovingUp;
-    bool playerMovingRight;
-    bool playerMovingDown;
-    bool playerMovingLeft;
-
+    
     private void Awake()
     {
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
         hurtbox = GetComponentInChildren<Hurtbox>(true);
         hurtbox.gameObject.SetActive(false);
-
+        
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
-        
-        
+
+        knockback = GetComponent<Knockback>();
     }
 
     private void Start()
@@ -63,14 +59,11 @@ public class Player : MonoBehaviour
         fireButton.canceled += _ => { FinishSwipe(); };
 
         playerControls.Player.Dodge.performed += Dodge;
-
     }
     
     private void Update()
     {
         inputValue = playerControls.Player.Move.ReadValue<Vector2>();
-
-        
     }
 
     private void FinishSwipe()
@@ -100,9 +93,6 @@ public class Player : MonoBehaviour
     {
         swordSwinging = true;
         hurtbox.gameObject.SetActive(true);
-        
-        //Moves the players hurtbox to up, down, left and right of the player's rigid body - Needs to stay relative to the direction the player is facing.
-        
         yield return new WaitForSeconds(0.2f);
         hurtbox.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.5f);
@@ -126,13 +116,21 @@ public class Player : MonoBehaviour
             hurtbox.gameObject.transform.SetPositionAndRotation(rb.position + new Vector2(inputValue.x * .5f, inputValue.y * .5f), Quaternion.identity);
             
         }
-
     }
 
     private void Dodge(InputAction.CallbackContext context)
     {
         rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
+
+    public void TakeDamage(Transform damageSource)
+    {
+        // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
+        knockback.KnockBack(damageSource, 5.0f);
+        Debug.Log("Taken Damage");
+    }
+
+
 }
 
 
