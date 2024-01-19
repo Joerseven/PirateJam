@@ -3,29 +3,26 @@ Shader "Unlit/SpurtShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        [MainColor] _Color ("Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _Thick ("Thiccness", Float) = 160
         _USpreadTime ("Universal Spread Time", float) = 0.2
-        _BorderThick ("Border Width", float) = 0.01
-        _BorderColor ("Border Color", Color) = (0.0, 0.0, 0.0, 1.0)
     }
     SubShader
     {
         Tags 
         {
-            Queue = Transparent
-            RenderType = Opaque
+            "Queue"="Transparent"
+            "RenderType"="Transparent"
         }
         LOD 100
-        ZWrite Off
-        Cull Off
         Blend SrcAlpha OneMinusSrcAlpha
-        
 
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            // make fog work
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
@@ -48,16 +45,11 @@ Shader "Unlit/SpurtShader"
             float4 _MainTex_ST;
             float4 _Color;
             float _Thick;
-            float _USpreadTime;
-            float _BorderThick;
-            float4 _BorderColor;
             
             float4 particlePos[50];
             float elapsed;
             float3 targetCell;
             float cellArea;
-            float3 originPos;
-            float4 color;
 
             v2f vert (appdata v)
             {
@@ -71,51 +63,24 @@ Shader "Unlit/SpurtShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-
-                #define DIV_SQRT_2 0.70710678118
-                
-                float pixelVal = 0;
-                float directionVals[8] = {0,0,0,0,0,0,0,0};
-                float2 directionVecs[8] = {
-                    float2(1, 0),
-                    float2(-1, 0),
-                    float2(0, 1),
-                    float2(0, -1),
-                    float2(DIV_SQRT_2, DIV_SQRT_2),
-                    float2(-DIV_SQRT_2, DIV_SQRT_2),
-                    float2(DIV_SQRT_2, -DIV_SQRT_2),
-                    float2(-DIV_SQRT_2, -DIV_SQRT_2),
-                };
-                
+                float4 pixelVal = {0,0,0,0};
                 
                 for (float p=0; p<50; p++)
                 {
                     float fVal = (3 - cellArea) * 0.6;
-                    float disModifier = length(particlePos[(int)p].xy - originPos.xy) * _USpreadTime;
-                    float timeModifier = min(1, min(elapsed, disModifier) / disModifier);
-
-                    
-                    
-                    float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick) * step(0.3, timeModifier);
-                    for (int d=0; d<8; d++)
-                    {
-                        directionVals[d] += 1 / (length(i.worldPos.xy - (particlePos[(int)p].xy + directionVecs[d] * _BorderThick)) * _Thick) * step(0.3, timeModifier);
-                    }
+                    float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick);
                     pixelVal += dis;
                     p += fVal;
                     
                 }
-                float3 steppedDf = step(0.8, pixelVal);
-                float3 totalBorder = float3(0,0,0);
-
-                for (int d = 0; d < 8; d++)
-                {
-                    totalBorder += step(0.8, directionVals[d]);
-                }
-
-                float3 finalColor = steppedDf * color + totalBorder * _BorderColor;
+                //pixelVal.xyz = smoothstep(0.06, 0.07, pixelVal.x) * _Color;
+                //pixelVal.w = step(0.1, pixelVal.x);
+                float4 steppedDf = step(0.8, pixelVal.x);
+                float4 edgeDf = step(0.77, pixelVal.x);
+                edgeDf = edgeDf - steppedDf;
                 
-                fixed4 col = float4(finalColor, min(1, steppedDf.r + totalBorder.r));
+                
+                fixed4 col = steppedDf * _Color + edgeDf * float4(0,0,0,1);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

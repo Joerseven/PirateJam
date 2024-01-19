@@ -18,9 +18,6 @@ public class Spurt : MonoBehaviour
     private Vector2Int levelSize;
     private LevelManager level;
 
-    [SerializeField]
-    private Color splurtColor;
-
     private float elapsed;
     
     [SerializeField]
@@ -47,7 +44,6 @@ public class Spurt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.identity;
         if (elapsed >= 0)
         {
             // More efficient way of doing this?
@@ -118,8 +114,6 @@ public class Spurt : MonoBehaviour
         materialProperty.SetFloat("elapsed", elapsed);
         materialProperty.SetVector("targetCell", (Vector3)targetCell);
         materialProperty.SetFloat("cellArea", cellArea);
-        materialProperty.SetVector("originPos", originPosition);
-        materialProperty.SetColor("color", splurtColor);
         sprite.SetPropertyBlock(materialProperty);
 
         elapsed = 0;
