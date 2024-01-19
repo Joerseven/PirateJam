@@ -33,6 +33,12 @@ public class Player : MonoBehaviour
     private Vector2 swipeStart;
 
     private Vector2 swingDirection;
+    
+    //Temp for testing
+    bool playerMovingUp;
+    bool playerMovingRight;
+    bool playerMovingDown;
+    bool playerMovingLeft;
 
     private void Awake()
     {
@@ -63,6 +69,8 @@ public class Player : MonoBehaviour
     private void Update()
     {
         inputValue = playerControls.Player.Move.ReadValue<Vector2>();
+
+        
     }
 
     private void FinishSwipe()
@@ -92,7 +100,8 @@ public class Player : MonoBehaviour
     {
         swordSwinging = true;
         hurtbox.gameObject.SetActive(true);
-        hurtbox.gameObject.transform.SetPositionAndRotation(rb.position + new Vector2(inputValue.x * .5f, inputValue.y * .5f), Quaternion.identity);
+        
+        //Moves the players hurtbox to up, down, left and right of the player's rigid body - Needs to stay relative to the direction the player is facing.
         
         yield return new WaitForSeconds(0.2f);
         hurtbox.gameObject.SetActive(false);
@@ -100,18 +109,8 @@ public class Player : MonoBehaviour
         swordSwinging = false;
     }
 
-    private void PlayerFacingDirection()
-    {
-        bool playerHasVerticalMovement = rb.velocity.y > Mathf.Epsilon;
-        bool playerHasHorizontalMovement = rb.velocity.x > Mathf.Epsilon;
-        
-
-
-    }
-
     private void SwordHit(Collider2D collidedWith)
     {
-
         if (collidedWith.TryGetComponent<Enemy>(out var enemy))
         {
             enemy.ReceiveSlash(swingDirection);
@@ -122,15 +121,18 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         rb.AddForce(inputValue * (movementSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+        if (inputValue != new Vector2(0, 0))
+        {
+            hurtbox.gameObject.transform.SetPositionAndRotation(rb.position + new Vector2(inputValue.x * .5f, inputValue.y * .5f), Quaternion.identity);
+            
+        }
+
     }
 
     private void Dodge(InputAction.CallbackContext context)
     {
         rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
-    
-
-
 }
 
 
