@@ -18,6 +18,9 @@ public class Spurt : MonoBehaviour
     private Vector2Int levelSize;
     private LevelManager level;
 
+    [SerializeField]
+    private Color splurtColor;
+
     private float elapsed;
     
     [SerializeField]
@@ -114,6 +117,8 @@ public class Spurt : MonoBehaviour
         materialProperty.SetFloat("elapsed", elapsed);
         materialProperty.SetVector("targetCell", (Vector3)targetCell);
         materialProperty.SetFloat("cellArea", cellArea);
+        materialProperty.SetVector("originPos", originPosition);
+        materialProperty.SetColor("color", splurtColor);
         sprite.SetPropertyBlock(materialProperty);
 
         elapsed = 0;
