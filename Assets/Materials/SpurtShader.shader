@@ -13,11 +13,14 @@ Shader "Unlit/SpurtShader"
     {
         Tags 
         {
-            "Queue"="Transparent"
-            "RenderType"="Transparent"
+            Queue = Transparent
+            RenderType = Opaque
         }
         LOD 100
+        ZWrite Off
+        Cull Off
         Blend SrcAlpha OneMinusSrcAlpha
+        
 
         Pass
         {
@@ -89,12 +92,15 @@ Shader "Unlit/SpurtShader"
                 for (float p=0; p<50; p++)
                 {
                     float fVal = (3 - cellArea) * 0.6;
-                    float originDisModifier = length(particlePos[(int)p].xy - originPos.xy) * _USpreadTime;
-                    float timeModifier = min(1, min(elapsed, originDisModifier) / originDisModifier);
-                    float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick) * timeModifier;
+                    float disModifier = length(particlePos[(int)p].xy - originPos.xy) * _USpreadTime;
+                    float timeModifier = min(1, min(elapsed, disModifier) / disModifier);
+
+                    
+                    
+                    float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick) * step(0.3, timeModifier);
                     for (int d=0; d<8; d++)
                     {
-                        directionVals[d] += 1 / (length(i.worldPos.xy - (particlePos[(int)p].xy + directionVecs[d] * _BorderThick)) * _Thick) * timeModifier;
+                        directionVals[d] += 1 / (length(i.worldPos.xy - (particlePos[(int)p].xy + directionVecs[d] * _BorderThick)) * _Thick) * step(0.3, timeModifier);
                     }
                     pixelVal += dis;
                     p += fVal;
@@ -102,19 +108,19 @@ Shader "Unlit/SpurtShader"
                 }
                 //pixelVal.xyz = smoothstep(0.06, 0.07, pixelVal.x) * _Color;
                 //pixelVal.w = step(0.1, pixelVal.x);
-                float4 steppedDf = step(0.8, pixelVal);
+                float3 steppedDf = step(0.8, pixelVal);
                 
 
-                float totalBorder = 0;
+                float3 totalBorder = float3(0,0,0);
 
                 for (int d = 0; d < 8; d++)
                 {
-                    float steppedDirection = step(0.8, directionVals[d]);
-                    totalBorder += steppedDirection;
+                    totalBorder += step(0.8, directionVals[d]);
                 }
+
+                float3 finalColor = steppedDf * _Color + totalBorder * _BorderColor;
                 
-                
-                fixed4 col = steppedDf * _Color + totalBorder * _BorderColor;
+                fixed4 col = float4(finalColor, min(1, steppedDf.r + totalBorder.r));
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
