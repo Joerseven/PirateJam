@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BorderThick: 0.01
+    - _BorderThick: 0.025
     - _Thick: 156.45
     - _USpreadTime: 0.2
     m_Colors:

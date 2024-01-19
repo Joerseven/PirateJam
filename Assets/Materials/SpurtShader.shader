@@ -27,7 +27,6 @@ Shader "Unlit/SpurtShader"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
@@ -59,6 +58,7 @@ Shader "Unlit/SpurtShader"
             float3 targetCell;
             float cellArea;
             float3 originPos;
+            float4 color;
 
             v2f vert (appdata v)
             {
@@ -106,11 +106,7 @@ Shader "Unlit/SpurtShader"
                     p += fVal;
                     
                 }
-                //pixelVal.xyz = smoothstep(0.06, 0.07, pixelVal.x) * _Color;
-                //pixelVal.w = step(0.1, pixelVal.x);
                 float3 steppedDf = step(0.8, pixelVal);
-                
-
                 float3 totalBorder = float3(0,0,0);
 
                 for (int d = 0; d < 8; d++)
@@ -118,7 +114,7 @@ Shader "Unlit/SpurtShader"
                     totalBorder += step(0.8, directionVals[d]);
                 }
 
-                float3 finalColor = steppedDf * _Color + totalBorder * _BorderColor;
+                float3 finalColor = steppedDf * color + totalBorder * _BorderColor;
                 
                 fixed4 col = float4(finalColor, min(1, steppedDf.r + totalBorder.r));
                 // apply fog
