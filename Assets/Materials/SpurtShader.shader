@@ -3,7 +3,6 @@ Shader "Unlit/SpurtShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        [MainColor] _Color ("Color", Color) = (1.0, 1.0, 1.0, 1.0)
         _Thick ("Thiccness", Float) = 160
         _USpreadTime ("Universal Spread Time", float) = 0.2
     }
