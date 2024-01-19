@@ -190,7 +190,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   chargeSpeed: 5
-  chargeCooldown: 3
+  chargeCooldown: 1
+  animationTime: 1
 --- !u!1 &5610816441914161299
 GameObject:
   m_ObjectHideFlags: 0
