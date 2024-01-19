@@ -29,10 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BorderThick: 0.025
     - _Thick: 156.45
     - _USpreadTime: 0.2
     m_Colors:
-    - _BorderColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Color: {r: 0.63787574, g: 0.7921569, b: 0.23529404, a: 1}
+    - _Color: {r: 0.7924528, g: 0.23549305, b: 0.23549305, a: 1}
   m_BuildTextureStacks: []
