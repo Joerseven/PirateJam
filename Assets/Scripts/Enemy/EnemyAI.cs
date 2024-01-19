@@ -11,7 +11,7 @@ public class EnemyAI : MonoBehaviour
         Attacking
     }
     
-    [SerializeField] private MonoBehaviour enemyType;
+    [SerializeField] private IEnemy enemyType;
 
     private State state;
     private float attackRange;
@@ -19,7 +19,7 @@ public class EnemyAI : MonoBehaviour
     private void Awake()
     {
         state = State.Roaming;
-        attackRange = (enemyType as IEnemy).GetAttackRange();
+        attackRange = enemyType.GetAttackRange();
     }
 
     // Start called before the first frame update
@@ -30,7 +30,6 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Debug.Log(state);
         StateControl();
     }
 
@@ -51,8 +50,8 @@ public class EnemyAI : MonoBehaviour
     }
 
     private void Roaming()
-    {
-        (enemyType as IEnemy).Move();
+    { 
+        enemyType.Move();
 
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
         {
@@ -62,7 +61,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Attacking()
     {
-        (enemyType as IEnemy).Attack();
+        enemyType.Attack();
         
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) > attackRange)
         {
