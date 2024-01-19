@@ -79,7 +79,6 @@ public class Player : MonoBehaviour
         {
             Attack(delta.y > 0 ? new Vector2(0, 1): new Vector2(0, -1));
         }
-
     }
 
     private void Attack(Vector2 direction)
@@ -123,14 +122,12 @@ public class Player : MonoBehaviour
         rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
 
-    public void TakeDamage(Transform damageSource)
+    public void TakeDamage(Transform damageSource, float knockbackAmount)
     {
         // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
-        knockback.KnockBack(damageSource, 5.0f);
+        knockback.KnockBack(damageSource, knockbackAmount);
         Debug.Log("Taken Damage");
     }
-
-
 }
 
 

@@ -6,7 +6,7 @@ using UnityEngine;
 //Not currently used as it moves the enemy in a random direction. Needs to be relative to the grid but I'm off to the gym in a minute and then I'll be drinking... Work for tomorrow!
 public class EnemyPathfinding : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 10.0f;
+    [SerializeField] private float moveSpeed = 1.0f;
 
     private Rigidbody2D rb;
     private Vector2 moveDir;
@@ -24,17 +24,5 @@ public class EnemyPathfinding : MonoBehaviour
     public void NewDirection(Vector2 targetPos)
     {
         moveDir = targetPos;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

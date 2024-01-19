@@ -6,12 +6,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float projectileSpeed = 1.0f;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private float knockbackAmount = 5.0f;
 
     // Update is called once per frame
     void Update()
@@ -22,7 +17,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Player player = other.gameObject.GetComponent<Player>();
-        player?.TakeDamage(transform);
+        player?.TakeDamage(transform, knockbackAmount);
         Destroy(this.gameObject);
     }
 

@@ -16,11 +16,20 @@ public class Shooter : MonoBehaviour, IEnemy
     public void Attack()
     {
         if (!canAttack) { return; }
-        if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
-        {
-            StartCoroutine(AttackingRoutine());
-        }
+
+        StartCoroutine(AttackingRoutine());
     }
+
+    public void Move()
+    {
+        // No movement in the shooter enemy so no code :D
+    }
+
+    public float GetAttackRange()
+    {
+        return attackRange;
+    }
+
 
     private void Update()
     {
@@ -33,7 +42,6 @@ public class Shooter : MonoBehaviour, IEnemy
             float angle = Mathf.Atan2(targetPos.x, targetPos.y) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
         }
-        Attack();
     }
 
     private IEnumerator AttackingRoutine()
