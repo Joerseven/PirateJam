@@ -23,5 +23,7 @@ public class DragandDrop : EditorWindow
 
         //Load Stylesheet
         var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Cards/DragandDrop.uss");
+
+        DragandDropManipulator manipulator = new(rootVisualElement.Q<VisualElement>("object"));
     }
 }

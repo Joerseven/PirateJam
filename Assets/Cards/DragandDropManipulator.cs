@@ -42,7 +42,7 @@ public class DragandDropManipulator : PointerManipulator
     {
         targetStartPosition = target.transform.position;
         pointerStartPosition = evt.position;
-        targetStartPosition.CapturePointer(evt.pointerId);
+        target.CapturePointer(evt.pointerId);
         enabled = true;
     }
 
@@ -55,7 +55,7 @@ public class DragandDropManipulator : PointerManipulator
             Vector3 pointerDelta = evt.position - pointerStartPosition;
             target.transform.position = new Vector2(
                 Mathf.Clamp(targetStartPosition.x + pointerDelta.x, 0f, target.panel.visualTree.worldBound.width),
-                Mathf.Clamp(targetStartPosition.y + pointerDelta.y, 0f, targetStartPosition.panel.visualTree.worldBound.height));
+                Mathf.Clamp(targetStartPosition.y + pointerDelta.y, 0f, target.panel.visualTree.worldBound.height));
         }
     }
 
@@ -105,7 +105,7 @@ public class DragandDropManipulator : PointerManipulator
         VisualElement closest = null;
         foreach(VisualElement card in cardsList)
         {
-            Vector3 displacement RootSpaceOfCard(card) - target.transform.position;
+            Vector3 displacement = RootSpaceOfCard(card) - target.transform.position;
             float distanceSq = displacement.sqrMagnitude;
             if (distanceSq > bestDistanceSq)
             {
