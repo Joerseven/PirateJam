@@ -139,6 +139,11 @@ public class Spurt : MonoBehaviour
         // TODO: Add here a loop that calls another function to go along the line until it meets an invalid cell.
         // Unneeded at the moment because it's just a square with no obstacles.
 
+        while (!level.CanCover(furthestPossibleCell))
+        {
+            furthestPossibleCell -= new Vector3Int((int)direction.x, (int)direction.y, 0);
+        }
+        
         return furthestPossibleCell;
     }
 }
