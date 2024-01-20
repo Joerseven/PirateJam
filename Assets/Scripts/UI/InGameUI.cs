@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DeathMenu : MonoBehaviour
+public class InGameUI : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI helpText;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +18,10 @@ public class DeathMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            UpdateHelpText("This is a test");
+        }
     }
 
     public void RestartGame()
@@ -25,6 +32,11 @@ public class DeathMenu : MonoBehaviour
     public void LeaveGame()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void UpdateHelpText(string text)
+    {
+        helpText.text = text;
     }
 }
 
