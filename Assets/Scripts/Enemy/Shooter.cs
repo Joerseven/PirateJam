@@ -10,12 +10,20 @@ public class Shooter : MonoBehaviour, IEnemy
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private float attackRange = 5.0f;
     [SerializeField] private float attackCooldown = 2.0f;
+    private Enemy baseEnemy;
 
     private bool canAttack = true;
 
+    private void Start()
+    {
+        baseEnemy = GetComponent<Enemy>();
+    }
+
     public void Attack()
     {
-        if (!canAttack) { return; }
+        if (!canAttack) return;
+        if (baseEnemy.IsDead) return;
+        
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
         {
             StartCoroutine(AttackingRoutine());
@@ -24,6 +32,7 @@ public class Shooter : MonoBehaviour, IEnemy
 
     private void Update()
     {
+        if (baseEnemy.IsDead) return;
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
         {
             Vector3 targetPos = Player.Instance.transform.position;
