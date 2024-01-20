@@ -113,7 +113,6 @@ public class Player : MonoBehaviour
         if (inputValue != new Vector2(0, 0))
         {
             hurtbox.gameObject.transform.SetPositionAndRotation(rb.position + new Vector2(inputValue.x * .5f, inputValue.y * .5f), Quaternion.identity);
-            
         }
     }
 
@@ -127,6 +126,11 @@ public class Player : MonoBehaviour
         // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
         knockback.KnockBack(damageSource, knockbackAmount);
         Debug.Log("Taken Damage");
+    }
+
+    public void PlayerDeath()
+    {
+        Debug.Log("The last bread slice has fallen!!!");
     }
 }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 // This script attaches to an enemy that shoot a projectile towards the player. It is very basic at the moment, I'll refine it once the playtesting has been done.
 public class Shooter : MonoBehaviour, IEnemy
@@ -12,6 +13,14 @@ public class Shooter : MonoBehaviour, IEnemy
     [SerializeField] private float attackCooldown = 2.0f;
 
     private bool canAttack = true;
+
+    private void Awake()
+    {
+    }
+
+    private void Start()
+    {
+    }
 
     public void Attack()
     {
@@ -29,8 +38,7 @@ public class Shooter : MonoBehaviour, IEnemy
     {
         return attackRange;
     }
-
-
+    
     private void Update()
     {
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
