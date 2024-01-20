@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     private Vector2 swipeStart;
     private Vector2 swingDirection;
     private Hurtbox hurtbox;
+    private Animator animator;
     
     
     private void Awake()
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         hurtbox = GetComponentInChildren<Hurtbox>(true);
         hurtbox.gameObject.SetActive(false);
+        animator = GetComponentInChildren<Animator>();
         
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
@@ -63,7 +65,28 @@ public class Player : MonoBehaviour
     
     private void Update()
     {
+        animator.SetBool("isWalkingRight", false);
+        animator.SetBool("isWalkingLeft", false);
+        animator.SetBool("isWalkingUp", false);
+        animator.SetBool("isWalkingDown", false);
+        
         inputValue = playerControls.Player.Move.ReadValue<Vector2>();
+        if (inputValue.x >= 0.7)
+        {
+            animator.SetBool("isWalkingRight", true);
+        }
+        else if (inputValue.x <= -0.7)
+        {
+            animator.SetBool("isWalkingLeft", true);
+        }
+        else if (inputValue.y >= 0.7)
+        {
+            animator.SetBool("isWalkingUp", true);
+        }
+        else if (inputValue.y <= -0.7)
+        {
+            animator.SetBool("isWalkingDown", true);
+        }
     }
 
     private void FinishSwipe()
