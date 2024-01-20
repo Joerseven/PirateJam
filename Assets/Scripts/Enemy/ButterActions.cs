@@ -11,7 +11,6 @@ using UnityEngine.Events;
 
 public class ButterActions : MonoBehaviour
 {
-    private UnityEvent playerDeathEvent;
 
     [SerializeField] private GameObject target;
     [SerializeField] private float chargeSpeed;
@@ -39,14 +38,12 @@ public class ButterActions : MonoBehaviour
 
     private void Awake()
     {
-        playerDeathEvent = new UnityEvent();
     }
 
     private void Start()
     {
         grid = GetComponentInParent<Grid>();
         _rb = GetComponent<Rigidbody2D>();
-        playerDeathEvent.AddListener(delegate {Player.Instance.PlayerDeath(); });
     }
 
     public void InitButter(GameObject t)
@@ -139,9 +136,9 @@ public class ButterActions : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.TryGetComponent<Player>(out var player))
         {
-            playerDeathEvent.Invoke();
+            player.playerDeathEvent.Invoke();
         }
     }
 }

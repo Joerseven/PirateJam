@@ -8,19 +8,6 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float projectileSpeed = 1.0f;
     [SerializeField] private float knockbackAmount = 5.0f;
-    private UnityEvent playerDeathEvent;
-    private Player player;
-
-    private void Awake()
-    {
-        playerDeathEvent = new UnityEvent();
-    }
-
-    private void Start()
-    {
-        player = GetComponent<Player>();
-        playerDeathEvent.AddListener(delegate { Player.Instance.PlayerDeath(); });
-    }
 
     // Update is called once per frame
     void Update()
@@ -30,10 +17,10 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.name == "Player")
+        if (other.TryGetComponent<Player>(out var player))
         {
-            player?.TakeDamage(transform, knockbackAmount);
-            playerDeathEvent.Invoke();
+            player.TakeDamage(transform, knockbackAmount);
+            player.playerDeathEvent.Invoke();
         }
         Destroy(this.gameObject);
     }

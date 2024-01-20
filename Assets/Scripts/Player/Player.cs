@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.SearchService;
@@ -10,6 +11,8 @@ using UnityEngine.SearchService;
 public class Player : MonoBehaviour
 {
     public static Player Instance;
+    public UnityEvent playerDeathEvent;
+
     public enum Direction
     {
         Up,
@@ -59,6 +62,7 @@ public class Player : MonoBehaviour
         fireButton.canceled += _ => { FinishSwipe(); };
 
         playerControls.Player.Dodge.performed += Dodge;
+        playerDeathEvent.AddListener(PlayerDeath);
     }
     
     private void Update()
@@ -125,13 +129,13 @@ public class Player : MonoBehaviour
     {
         // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
         knockback.KnockBack(damageSource, knockbackAmount);
-        Debug.Log("Taken Damage");
     }
 
-    public void PlayerDeath()
+    private void PlayerDeath()
     {
         Debug.Log("The last bread slice has fallen!!!");
     }
+    
 }
 
 
