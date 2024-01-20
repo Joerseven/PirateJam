@@ -5,45 +5,38 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    private Shooter shooter;
     private enum State
     {
         Roaming,
-        Attacking
+        Attacking,
+        Patrolling
     }
     
-    [SerializeField] private float roamingTime = 0.0f;
-    [SerializeField] private float roamDirChangeTime = 2.0f;
-    [SerializeField] private float attackRange = 5.0f;
-    [SerializeField] private float attackCooldown = 2.0f;
     [SerializeField] private MonoBehaviour enemyType;
 
     private State state;
-    private EnemyPathfinding enemyPathfinding;
-    private Vector2 roamPosition;
-
-    private bool canAttack = true;
+    private float attackRange = 2.0f;
     
     private void Awake()
     {
-        enemyPathfinding = GetComponent<EnemyPathfinding>();
-        shooter = GetComponent<Shooter>();
         state = State.Roaming;
+        attackRange = (enemyType as IEnemy)?.GetAttackRange() ?? attackRange;
     }
 
     // Start called before the first frame update
     private void Start()
     {
-        roamPosition = GetRoamingPosition();
+
     }
 
     // Update is called once per frame
     private void Update()
     {
-         //Debug.Log(state);
+        StateControl();
     }
 
-    private void MovementStateControl()
+    
+    private void StateControl()
     {
         //State machine is inprogress, needs refining before can be applied to the enemies. ATM it doesn't switch states properly based on the conditions i've set.
         switch (state)
@@ -60,44 +53,21 @@ public class EnemyAI : MonoBehaviour
 
     private void Roaming()
     {
-        roamingTime += Time.fixedDeltaTime;
-        enemyPathfinding.NewDirection(roamPosition);
-            Debug.Log("we in this bitch roaming around causing chaos");
+        (enemyType as IEnemy)?.Move();
 
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
         {
             state = State.Attacking;
         }
-
-        if (roamingTime > roamDirChangeTime)
-        {
-            roamPosition = GetRoamingPosition();
-        }
-
     }
 
     private void Attacking()
     {
-        if (canAttack)
+        (enemyType as IEnemy)?.Attack();
+        
+        if (Vector2.Distance(transform.position, Player.Instance.transform.position) > attackRange)
         {
-            canAttack = false;
-            /*
-             * I'm in the process of setting up an interface for the enemies so that later on we can have multiple enemies with an "attack" function that can be called.
-             */
-            //(enemyType as IEnemy).Attack();
-            shooter.Attack();
-            StartCoroutine(AttackRoutine());
+            state = State.Roaming;
         }
-    }
-
-    private IEnumerator AttackRoutine()
-    {
-        yield return new WaitForSeconds(attackCooldown);
-        canAttack = true;
-    }
-
-    private Vector2 GetRoamingPosition()
-    {
-        return new Vector2(UnityEngine.Random.Range(-1.0f, 1.0f), UnityEngine.Random.Range(-1.0f, 1.0f)).normalized;
     }
 }

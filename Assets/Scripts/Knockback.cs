@@ -6,7 +6,6 @@ using UnityEngine;
 // Can be applied to any Gameobject that will be taking damage of some sort.
 public class Knockback : MonoBehaviour
 {
-
     private Rigidbody2D rb;
 
     private void Awake()

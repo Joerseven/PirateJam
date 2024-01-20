@@ -2,16 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float projectileSpeed = 1.0f;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private float knockbackAmount = 5.0f;
 
     // Update is called once per frame
     void Update()
@@ -21,8 +17,11 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = other.gameObject.GetComponent<Player>();
-        player?.TakeDamage(transform);
+        if (other.TryGetComponent<Player>(out var player))
+        {
+            player.TakeDamage(transform, knockbackAmount);
+            player.playerDeathEvent.Invoke();
+        }
         Destroy(this.gameObject);
     }
 

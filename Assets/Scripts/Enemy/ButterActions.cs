@@ -2,9 +2,12 @@
 //To contain code of behavior of the butter enemy.
 //Roam and Charge
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ButterActions : MonoBehaviour
 {
@@ -12,6 +15,7 @@ public class ButterActions : MonoBehaviour
     [SerializeField] private GameObject target;
     [SerializeField] private float chargeSpeed;
     [SerializeField] private float chargeCooldown;
+    [SerializeField] private float animationTime = 1.0f;
 
     private Enemy enemyBase;
     
@@ -24,7 +28,6 @@ public class ButterActions : MonoBehaviour
     private Grid grid;
     private float coolDown;
     private float delta;
-    [SerializeField] private float animationTime = 1.0f;
 
     enum ButterState
     {
@@ -34,7 +37,11 @@ public class ButterActions : MonoBehaviour
     }
 
     private ButterState state;
-    
+
+    private void Awake()
+    {
+    }
+
     private void Start()
     {
         grid = GetComponentInParent<Grid>();
@@ -57,6 +64,11 @@ public class ButterActions : MonoBehaviour
   
     private void Update()
     {
+        ButterActionsStateController();
+    }
+
+    private void ButterActionsStateController()
+    {
         enemyPositionOnGrid = grid.WorldToCell(transform.position);
         playerPositionOnGrid = grid.WorldToCell(target.transform.position);
         
@@ -65,47 +77,48 @@ public class ButterActions : MonoBehaviour
             return;
         }
 
-        if (state == ButterState.Searching)
+        switch (state)
         {
-            if ((enemyPositionOnGrid - playerPositionOnGrid).magnitude <= 1)
-            {
-                state = ButterState.Charging;
-                gridTarget = GetTargetPos();
-                originPos = transform.position;
-                delta = 0;
+            default:
+                case ButterState.Charging:
+                    
+                    var tValue = delta / animationTime;
 
-            }
-        }
-
-        if (state == ButterState.Charging)
-        {
+                    if (tValue >= 1)
+                    {
+                        transform.position = gridTarget;
+                        state = ButterState.Recharging;
+                        coolDown = chargeCooldown;
+                    }
             
-            var tValue = delta / animationTime;
-
-            if (tValue >= 1)
-            {
-                transform.position = gridTarget;
-                state = ButterState.Recharging;
-                coolDown = chargeCooldown;
-            }
+                    var distanceVec = gridTarget - originPos;
+                    var deltaVec = tValue * tValue * tValue * distanceVec;
+                    transform.position = originPos + deltaVec;
             
-            var distanceVec = gridTarget - originPos;
-            var deltaVec =  (1 - Mathf.Pow(1 - tValue, 3)) * distanceVec;
-            transform.position = originPos + deltaVec;
+                    delta += Time.deltaTime;
+                    break;
             
-            delta += Time.deltaTime;
+            case ButterState.Recharging:
+                
+                if (coolDown <= 0)
+                {
+                    state = ButterState.Searching;
+                }
+                coolDown -= Time.deltaTime;
+                
+                break;
+            
+            case ButterState.Searching:
+                
+                if ((enemyPositionOnGrid - playerPositionOnGrid).magnitude <= 1)
+                {
+                    state = ButterState.Charging;
+                    gridTarget = GetTargetPos();
+                    originPos = transform.position;
+                    delta = 0;
+                }
+                break;
         }
-
-        if (state == ButterState.Recharging)
-        {
-            if (coolDown <= 0)
-            {
-                state = ButterState.Searching;
-            }
-            coolDown -= Time.deltaTime;
-        }
-        
-        
     }
 
     private Vector2 FindPlayer()
@@ -132,7 +145,15 @@ public class ButterActions : MonoBehaviour
             }
             return newPos;
         }
-
         return transform.position;
-    }   
+    }
+    
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.TryGetComponent<Player>(out var player))
+        {
+            player.playerDeathEvent.Invoke();
+        }
+    }
 }

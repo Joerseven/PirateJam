@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.SearchService;
@@ -10,6 +11,8 @@ using UnityEngine.SearchService;
 public class Player : MonoBehaviour
 {
     public static Player Instance;
+    public UnityEvent playerDeathEvent;
+
     public enum Direction
     {
         Up,
@@ -61,6 +64,7 @@ public class Player : MonoBehaviour
         fireButton.canceled += _ => { FinishSwipe(); };
 
         playerControls.Player.Dodge.performed += Dodge;
+        playerDeathEvent.AddListener(PlayerDeath);
     }
     
     private void Update()
@@ -102,7 +106,6 @@ public class Player : MonoBehaviour
         {
             Attack(delta.y > 0 ? new Vector2(0, 1): new Vector2(0, -1));
         }
-
     }
 
     private void Attack(Vector2 direction)
@@ -137,7 +140,6 @@ public class Player : MonoBehaviour
         if (inputValue != new Vector2(0, 0))
         {
             hurtbox.gameObject.transform.SetPositionAndRotation(rb.position + new Vector2(inputValue.x * .5f, inputValue.y * .5f), Quaternion.identity);
-            
         }
     }
 
@@ -146,14 +148,17 @@ public class Player : MonoBehaviour
         rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
 
-    public void TakeDamage(Transform damageSource)
+    public void TakeDamage(Transform damageSource, float knockbackAmount)
     {
         // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
-        knockback.KnockBack(damageSource, 5.0f);
-        Debug.Log("Taken Damage");
+        knockback.KnockBack(damageSource, knockbackAmount);
     }
 
-
+    private void PlayerDeath()
+    {
+        Debug.Log("The last bread slice has fallen!!!");
+    }
+    
 }
 
 
