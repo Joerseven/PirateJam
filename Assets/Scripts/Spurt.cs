@@ -60,7 +60,7 @@ public class Spurt : MonoBehaviour
         particleOrigin = transform.position;
         
         ResizeSpurt(direction);
-        AnimateSpurt();
+        AnimateSpurt(direction);
         RegisterSpurtOnLevel();
     }
 
@@ -83,11 +83,12 @@ public class Spurt : MonoBehaviour
         level.AddSpurtToLevel(originCell, targetCell);
     }
     
-    private void AnimateSpurt()
+    private void AnimateSpurt(Vector2 direction)
     {
         var cellArea = 1 + cellDelta.magnitude;
         particleTargets = new Vector4[10 + (int)cellArea * 15];
         var maxDistance = grid.CellToWorld(targetCell) - originPosition;
+        Vector3 direction3 = new Vector3(direction.x, direction.y, 0);
 
         for (int i = 0; i < particleTargets.Length; i++)
         {
@@ -95,12 +96,13 @@ public class Spurt : MonoBehaviour
             float yRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.15f;
             
             float spreadTValue = i / (float)particleTargets.Length;
-            Vector3 addOn = cellDelta.normalized * 0.35f;
+            Vector3 addOn = direction3 * 0.35f;
             
-            float distanceSpreadModifier = Random.Range(-0.2f, 0.2f) * (spreadTValue);
+            float distanceSpreadModifier = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.45f * (spreadTValue);
+            Vector3 cellDeltaNorm = cellDelta.normalized;
             
-            particleTargets[i] = new Vector4(originPosition.x + xRand + (cellDelta.x + addOn.x) * (spreadTValue) + distanceSpreadModifier * cellDelta.y, 
-                                            originPosition.y + yRand + (cellDelta.y + addOn.y) * (spreadTValue) + distanceSpreadModifier * cellDelta.x,
+            particleTargets[i] = new Vector4(originPosition.x + xRand + (cellDelta.x + addOn.x) * (spreadTValue) + distanceSpreadModifier * cellDeltaNorm.y, 
+                                            originPosition.y + yRand + (cellDelta.y + addOn.y) * (spreadTValue) + distanceSpreadModifier * cellDeltaNorm.x,
                                             0, 0);
             
         }
