@@ -40,7 +40,7 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-         Debug.Log(state);
+         //Debug.Log(state);
     }
 
     private void MovementStateControl()

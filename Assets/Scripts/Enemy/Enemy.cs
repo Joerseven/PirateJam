@@ -2,11 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.Processors;
 
 public class Enemy : MonoBehaviour
 {
 
     public UnityEvent<Enemy> OnEnemyDeath;
+
+    public delegate bool DelCanDamage();
+    public DelCanDamage CanDamage;
+
+    public bool IsDead;
+    private Collider2D enemyCollider;
 
     private Grid grid;
     
@@ -15,6 +22,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         grid = GetComponentInParent<Grid>();
+        enemyCollider = GetComponent<Collider2D>();
         spurt = GetComponentInChildren<Spurt>(true);
     }
 
@@ -33,12 +41,32 @@ public class Enemy : MonoBehaviour
         spurt.CreateSpurt(direction);
     }
 
+    public void Kill()
+    {
+        IsDead = true;
+        enemyCollider.enabled = false;
+    }
+
     // Takes in slash direction as unit vector
     public void ReceiveSlash(Vector2 slashDirection)
     {
-        OnEnemyDeath.Invoke(this);
+        var damageable = true;
+        
+        if (CanDamage != null)
+        {
+            damageable = CanDamage();
+        }
+
+        if (!damageable)
+        {
+            return;
+        }
+
+        Kill();
+        
         TriggerSpurt(slashDirection);
-        // Testing spurt
-        //gameObject.SetActive(false);
+        OnEnemyDeath.Invoke(this);
+        
     }
+    
 }

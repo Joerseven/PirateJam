@@ -37,10 +37,6 @@ public class Spurt : MonoBehaviour
         level = GetComponentInParent<LevelManager>();
         levelSize = level.size;
         sprite = GetComponent<SpriteRenderer>();
-        
-        originCell = grid.WorldToCell(transform.position);
-        originPosition = transform.position;
-        particleOrigin = transform.position;
         elapsed = -1;
     }
 
@@ -59,6 +55,10 @@ public class Spurt : MonoBehaviour
 
     public void CreateSpurt(Vector2 direction)
     {
+        originCell = grid.WorldToCell(transform.position);
+        originPosition = transform.position;
+        particleOrigin = transform.position;
+        
         ResizeSpurt(direction);
         AnimateSpurt();
         RegisterSpurtOnLevel();
@@ -90,7 +90,6 @@ public class Spurt : MonoBehaviour
         particleTargets = new Vector4[PARTICLECOUNT];
         var cellArea = 1 + cellDelta.magnitude;
         var maxDistance = grid.CellToWorld(targetCell) - originPosition;
-        print(cellArea);
 
         for (int i = 0; i < PARTICLECOUNT; i++)
         {
