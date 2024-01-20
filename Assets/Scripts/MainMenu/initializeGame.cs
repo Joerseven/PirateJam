@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class initializeGame : MonoBehaviour
 {
     private AudioManager audioManagerCache;
+
+    private Animator animator;
     
     void Awake()
     {
@@ -15,6 +17,8 @@ public class initializeGame : MonoBehaviour
             Debug.LogError("Audio manager is NULL. Check Audio manager init.");
             }
         audioManagerCache.StartMainMenuMusic();
+
+        animator = GetComponentInChildren<Animator>();
        
     }
 
@@ -35,5 +39,9 @@ public class initializeGame : MonoBehaviour
         
     }
     
+    public void ViewCredits()
+    {
+        animator.SetTrigger("ViewCredits");
+    }
     
 }
