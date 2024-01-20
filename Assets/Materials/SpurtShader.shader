@@ -52,7 +52,7 @@ Shader "Unlit/SpurtShader"
             float _BorderThick;
             float4 _BorderColor;
             
-            float4 particlePos[50];
+            float4 particlePos[200];
             float elapsed;
             float3 targetCell;
             float cellArea;
@@ -88,13 +88,10 @@ Shader "Unlit/SpurtShader"
                 };
                 
                 
-                for (float p=0; p<50; p++)
+                for (float p=0; p< min(200, 10+15*cellArea); p++)
                 {
-                    float fVal = (3 - cellArea) * 0.6;
                     float disModifier = length(particlePos[(int)p].xy - originPos.xy) * _USpreadTime;
                     float timeModifier = min(1, min(elapsed, disModifier) / disModifier);
-
-                    
                     
                     float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick) * step(0.3, timeModifier);
                     for (int d=0; d<8; d++)
@@ -102,8 +99,6 @@ Shader "Unlit/SpurtShader"
                         directionVals[d] += 1 / (length(i.worldPos.xy - (particlePos[(int)p].xy + directionVecs[d] * _BorderThick)) * _Thick) * step(0.3, timeModifier);
                     }
                     pixelVal += dis;
-                    p += fVal;
-                    
                 }
                 float3 steppedDf = step(0.8, pixelVal);
                 float3 totalBorder = float3(0,0,0);

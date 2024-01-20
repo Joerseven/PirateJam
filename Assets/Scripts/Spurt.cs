@@ -82,35 +82,28 @@ public class Spurt : MonoBehaviour
     {
         level.AddSpurtToLevel(originCell, targetCell);
     }
-
-    // Don't touch this code. I don't understand it and I wrote it. 
+    
     private void AnimateSpurt()
     {
-
-        particleTargets = new Vector4[PARTICLECOUNT];
         var cellArea = 1 + cellDelta.magnitude;
+        particleTargets = new Vector4[10 + (int)cellArea * 15];
         var maxDistance = grid.CellToWorld(targetCell) - originPosition;
 
-        for (int i = 0; i < PARTICLECOUNT; i++)
+        for (int i = 0; i < particleTargets.Length; i++)
         {
             float xRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.15f;
             float yRand = Mathf.Pow(Random.Range(-1.0f, 1.0f), 3.0f) * 0.15f;
             
-            
-            float spreadTValue = i / (float)PARTICLECOUNT;
+            float spreadTValue = i / (float)particleTargets.Length;
             Vector3 addOn = cellDelta.normalized * 0.35f;
             
             float distanceSpreadModifier = Random.Range(-0.2f, 0.2f) * (spreadTValue);
-
-            
             
             particleTargets[i] = new Vector4(originPosition.x + xRand + (cellDelta.x + addOn.x) * (spreadTValue) + distanceSpreadModifier * cellDelta.y, 
                                             originPosition.y + yRand + (cellDelta.y + addOn.y) * (spreadTValue) + distanceSpreadModifier * cellDelta.x,
                                             0, 0);
             
         }
-        
-        //print(particleTargets[0] - new Vector4(particleOrigin.x, particleOrigin.y, 0, 0));
 
         materialProperty = new MaterialPropertyBlock();
         materialProperty.SetVectorArray("particlePos", particleTargets);
@@ -135,9 +128,6 @@ public class Spurt : MonoBehaviour
 
         furthestPossibleCell.Clamp(new Vector3Int(0, 0, 0),
             new Vector3Int(levelSize.x - 1, levelSize.y - 1, 0));
-        
-        // TODO: Add here a loop that calls another function to go along the line until it meets an invalid cell.
-        // Unneeded at the moment because it's just a square with no obstacles.
 
         while (!level.CanCover(furthestPossibleCell))
         {

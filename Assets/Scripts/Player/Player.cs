@@ -69,6 +69,8 @@ public class Player : MonoBehaviour
     
     private void Update()
     {
+        
+        //TODO: Move into different function and keep first pressed direction down to avoid jitters.
         animator.SetBool("isWalkingRight", false);
         animator.SetBool("isWalkingLeft", false);
         animator.SetBool("isWalkingUp", false);
