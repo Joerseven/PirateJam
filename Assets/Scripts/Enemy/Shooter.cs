@@ -11,20 +11,25 @@ public class Shooter : MonoBehaviour, IEnemy
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private float attackRange = 5.0f;
     [SerializeField] private float attackCooldown = 2.0f;
+    private Enemy baseEnemy;
+
+    SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite unsqueezed;
+    [SerializeField] Sprite squeezed;
 
     private bool canAttack = true;
 
-    private void Awake()
-    {
-    }
-
     private void Start()
     {
+        baseEnemy = GetComponent<Enemy>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void Attack()
     {
-        if (!canAttack) { return; }
+        if (!canAttack) return;
+        if (baseEnemy.IsDead) return;
+        
 
         StartCoroutine(AttackingRoutine());
     }
@@ -41,6 +46,7 @@ public class Shooter : MonoBehaviour, IEnemy
     
     private void Update()
     {
+        if (baseEnemy.IsDead) return;
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
         {
             Vector3 targetPos = Player.Instance.transform.position;
@@ -58,7 +64,15 @@ public class Shooter : MonoBehaviour, IEnemy
         Vector2 targetDir = Player.Instance.transform.position - transform.position;
         GameObject newBullet = Instantiate(enemyProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
         newBullet.transform.right = targetDir;
+        StartCoroutine(SqueezeBottle());
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
+    }
+
+    private IEnumerator SqueezeBottle()
+    {
+        spriteRenderer.sprite = squeezed;
+        yield return new WaitForSeconds(1);
+        spriteRenderer.sprite = unsqueezed;
     }
 }

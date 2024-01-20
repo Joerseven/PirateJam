@@ -16,6 +16,8 @@ public class ButterActions : MonoBehaviour
     [SerializeField] private float chargeSpeed;
     [SerializeField] private float chargeCooldown;
     [SerializeField] private float animationTime = 1.0f;
+
+    private Enemy enemyBase;
     
     private Rigidbody2D _rb;
 
@@ -44,11 +46,19 @@ public class ButterActions : MonoBehaviour
     {
         grid = GetComponentInParent<Grid>();
         _rb = GetComponent<Rigidbody2D>();
+        enemyBase = GetComponent<Enemy>();
+        enemyBase.CanDamage += IsDamageable;
     }
 
     public void InitButter(GameObject t)
     {
         target = t;
+    }
+
+    public bool IsDamageable()
+    {
+        if (state == ButterState.Charging) return false;
+        return true;
     }
 
   
@@ -62,6 +72,11 @@ public class ButterActions : MonoBehaviour
         enemyPositionOnGrid = grid.WorldToCell(transform.position);
         playerPositionOnGrid = grid.WorldToCell(target.transform.position);
         
+        if (enemyBase.IsDead)
+        {
+            return;
+        }
+
         switch (state)
         {
             default:
