@@ -14,7 +14,9 @@ public class LevelManager : MonoBehaviour
     public Vector2Int size;
 
     private List<Enemy> enemies;
+    private List<Unsplurtable> unsplurtables;
     // Start is called before the first frame update
+
     void Start()
     {
         
@@ -32,6 +34,7 @@ public class LevelManager : MonoBehaviour
         grid = GetComponent<Grid>();
         
         RegisterEnemies();
+        RegisterUnsplurtables();
         // TODO: Move this function away when adding the choosing 'cards' phase before the level.   
         BeginPlay();
     } 
@@ -48,6 +51,28 @@ public class LevelManager : MonoBehaviour
         {
             b.InitButter(GetComponentInChildren<Player>().gameObject);
         }
+    }
+
+    void RegisterUnsplurtables()
+    {
+        unsplurtables = GetComponentsInChildren<Unsplurtable>().ToList();
+        foreach (var u in unsplurtables)
+        {
+            // Add to covered for level finish detection.
+            var index = IndexTo1D(grid.WorldToCell(u.transform.position));
+            tileInfo[index].covered = 1;
+            tileInfo[index].canCover = false;
+        }
+    }
+
+    public bool CanCover(Vector3Int cell)
+    {
+        if (tileInfo[IndexTo1D(cell)].canCover)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     // Update is called once per frame
@@ -115,4 +140,5 @@ public class LevelManager : MonoBehaviour
 public class TileInfo
 {
     public int covered = 0;
+    public bool canCover = true;
 }
