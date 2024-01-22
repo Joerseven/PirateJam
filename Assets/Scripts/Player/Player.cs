@@ -72,6 +72,8 @@ public class Player : MonoBehaviour
 
         playerControls.Player.Dodge.performed += Dodge;
         PlayerDeathEvent.AddListener(PlayerDeath);
+        
+        transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
     }
     
     private void Update()

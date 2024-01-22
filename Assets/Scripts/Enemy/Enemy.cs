@@ -24,6 +24,8 @@ public class Enemy : MonoBehaviour
         grid = GetComponentInParent<Grid>();
         enemyCollider = GetComponent<Collider2D>();
         spurt = GetComponentInChildren<Spurt>(true);
+        
+        transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
     }
 
     void StartingLevel()
