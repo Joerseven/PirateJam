@@ -98,10 +98,10 @@ Shader "Unlit/SpurtShader"
                     float disModifier = length(particlePos[(int)p].xy - originPos.xy) * _USpreadTime;
                     float timeModifier = min(1, min(elapsed, disModifier) / disModifier);
                     
-                    float dis = 1 / (length(i.worldPos.xy - currentPos) * _Thick);
+                    float dis = 1 / (length(i.worldPos.xy - currentPos) * (_Thick + 100 * (1 - tTimeValue)));
                     for (int d=0; d<8; d++)
                     {
-                        directionVals[d] += 1 / (length(i.worldPos.xy - (currentPos + directionVecs[d] * _BorderThick)) * _Thick);
+                        directionVals[d] += 1 / (length(i.worldPos.xy - (currentPos + directionVecs[d] * _BorderThick)) * (_Thick + 100 * (1 - tTimeValue)));
                     }
                     pixelVal += dis;
                 }
