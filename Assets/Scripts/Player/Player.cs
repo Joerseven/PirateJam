@@ -100,6 +100,7 @@ public class Player : MonoBehaviour
     private void FinishSwipe()
     {
         Vector2 delta = swipePosition.ReadValue<Vector2>() - swipeStart;
+        Debug.Log(delta);
         if (delta.magnitude < 100) return;
         //It's getting late don't @ me for this line of code you're welcome to not do it in a brainfuck way.
         if (delta.x * delta.x > delta.y * delta.y)
