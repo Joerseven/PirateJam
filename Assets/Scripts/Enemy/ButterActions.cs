@@ -153,7 +153,7 @@ public class ButterActions : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<Player>(out var player))
         {
-            player.PlayerDeathEvent.Invoke();
+            player.HitPlayer();
         }
     }
 }

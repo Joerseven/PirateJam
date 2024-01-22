@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     
     [SerializeField] private float movementSpeed = 10.0f;
     [SerializeField] private float dodgeSpeed = 10.0f;
+    [SerializeField] private bool invuln = false;
     
     private Rigidbody2D rb;
     private Knockback knockback;
@@ -146,6 +147,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void HitPlayer()
+    {
+        PlayerDeathEvent.Invoke();
+    }
+
     private void Dodge(InputAction.CallbackContext context)
     {
         rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
@@ -153,6 +159,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)
     {
+        if (invuln) return;
         // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
         knockback.KnockBack(damageSource, knockbackAmount);
     }
