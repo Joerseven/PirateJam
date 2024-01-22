@@ -90,13 +90,18 @@ Shader "Unlit/SpurtShader"
                 
                 for (float p=0; p< min(200, 10+15*cellArea); p++)
                 {
+
+                    const float2 targetPos = particlePos[(int)p].xy;
+                    float tTimeValue = min(elapsed / _USpreadTime, 1);
+                    float2 currentPos = (targetPos - originPos.xy) * tTimeValue + originPos.xy;
+                    
                     float disModifier = length(particlePos[(int)p].xy - originPos.xy) * _USpreadTime;
                     float timeModifier = min(1, min(elapsed, disModifier) / disModifier);
                     
-                    float dis = 1 / (length(i.worldPos.xy - particlePos[(int)p].xy) * _Thick) * step(0.3, timeModifier);
+                    float dis = 1 / (length(i.worldPos.xy - currentPos) * _Thick);
                     for (int d=0; d<8; d++)
                     {
-                        directionVals[d] += 1 / (length(i.worldPos.xy - (particlePos[(int)p].xy + directionVecs[d] * _BorderThick)) * _Thick) * step(0.3, timeModifier);
+                        directionVals[d] += 1 / (length(i.worldPos.xy - (currentPos + directionVecs[d] * _BorderThick)) * _Thick);
                     }
                     pixelVal += dis;
                 }

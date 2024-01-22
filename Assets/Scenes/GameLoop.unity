@@ -2843,25 +2843,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 59935246}
     m_Modifications:
-    - target: {fileID: 1796720077592647654, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
-      propertyPath: m_Size.x
-      value: 1.3131557
-      objectReference: {fileID: 0}
-    - target: {fileID: 1796720077592647654, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
-      propertyPath: m_Size.y
-      value: 1.5323632
-      objectReference: {fileID: 0}
-    - target: {fileID: 1796720077592647654, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.0000002682209
-      objectReference: {fileID: 0}
-    - target: {fileID: 1796720077592647654, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.078288674
-      objectReference: {fileID: 0}
     - target: {fileID: 2229654332839907011, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4120968477622467309, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
+      propertyPath: invuln
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7943773117394589957, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_LocalPosition.x
