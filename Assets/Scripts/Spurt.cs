@@ -139,3 +139,9 @@ public class Spurt : MonoBehaviour
         return furthestPossibleCell;
     }
 }
+
+public class SpurtInfo
+{ 
+    public delegate void SpurtAction(Player player);
+    public SpurtAction spurtAction;
+}
