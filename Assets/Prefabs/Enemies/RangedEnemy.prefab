@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7069136599064770706}
   - component: {fileID: 3365217940218215546}
   - component: {fileID: 6546596598154020162}
+  - component: {fileID: 8654467766692134373}
   m_Layer: 0
   m_Name: RangedEnemy
   m_TagString: Untagged
@@ -202,6 +203,19 @@ MonoBehaviour:
   unsqueezed: {fileID: 21300000, guid: 7f63fe763f873a74c84232849a7e9d45, type: 3}
   squeezed: {fileID: 21300000, guid: a95ab6f3d1de0bd48961cc0311ad41c2, type: 3}
 --- !u!114 &6546596598154020162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629655329374997131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500ff86f4efcd574182ce74fc460be34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 0.3
+--- !u!114 &8654467766692134373
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

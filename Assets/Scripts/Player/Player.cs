@@ -39,6 +39,9 @@ public class Player : MonoBehaviour
     private Vector2 swingDirection;
     private Hurtbox hurtbox;
     private Animator animator;
+
+    private LevelManager levelManager;
+    private Grid grid;
     
     
     private void Awake()
@@ -48,6 +51,8 @@ public class Player : MonoBehaviour
         hurtbox = GetComponentInChildren<Hurtbox>(true);
         hurtbox.gameObject.SetActive(false);
         animator = GetComponentInChildren<Animator>();
+        levelManager = GetComponentInParent<LevelManager>();
+        grid = GetComponentInParent<Grid>();
         
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
@@ -156,7 +161,12 @@ public class Player : MonoBehaviour
 
     private void Dodge(InputAction.CallbackContext context)
     {
-        rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+        var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
+        if (splurtInfo.spurtAction == null)
+        {
+            rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+        }
+        
     }
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)

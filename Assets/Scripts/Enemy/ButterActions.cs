@@ -1,7 +1,3 @@
-//written by ed 2023
-//To contain code of behavior of the butter enemy.
-//Roam and Charge
-
 using System;
 using System.Collections;
 using System.Collections.Generic;

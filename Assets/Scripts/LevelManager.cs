@@ -73,12 +73,7 @@ public class LevelManager : MonoBehaviour
 
     public bool CanCover(Vector3Int cell)
     {
-        if (tileInfo[IndexTo1D(cell)].canCover)
-        {
-            return true;
-        }
-
-        return false;
+        return tileInfo[IndexTo1D(cell)].canCover;
     }
 
     // Update is called once per frame
@@ -106,6 +101,11 @@ public class LevelManager : MonoBehaviour
         {
             NextLevel();
         }
+    }
+
+    public SpurtInfo GetSplurtInfo(Vector3Int playerCell)
+    {
+        return tileInfo[IndexTo1D(playerCell)].spurtInfo;
     }
 
     public bool CheckLevelOver()
@@ -164,4 +164,5 @@ public class TileInfo
 {
     public int covered = 0;
     public bool canCover = true;
+    public SpurtInfo spurtInfo;
 }
