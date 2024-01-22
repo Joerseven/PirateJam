@@ -10,11 +10,14 @@ public class InGameUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI helpText;
 
     Animator animator;
+    private LevelManager levelManager;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        levelManager = GameObject.Find("Level").GetComponent<LevelManager>();
+        levelManager.LevelFailed.AddListener(ShowLeveFailedScreen);
         animator = GetComponent<Animator>();
     }
 
@@ -29,9 +32,14 @@ public class InGameUI : MonoBehaviour
         }
     }
 
+    private void ShowLeveFailedScreen()
+    {
+        animator.SetTrigger("PlayerDied");
+    }
+
     public void RestartGame()
     {
-        SceneManager.LoadScene("GameLoop");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LeaveGame()

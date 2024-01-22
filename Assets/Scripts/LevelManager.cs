@@ -3,18 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
     private Transform playerTransform;
     private Transform spawnpoint;
     private Grid grid;
-    private TileInfo[] tileInfo; 
+    private TileInfo[] tileInfo;
+    public UnityEvent LevelFailed;
 
     public Vector2Int size;
 
     private List<Enemy> enemies;
     private List<Unsplurtable> unsplurtables;
+    private Player player;
     // Start is called before the first frame update
 
     void Start()
@@ -29,9 +33,11 @@ public class LevelManager : MonoBehaviour
         {
             tileInfo[i] = new TileInfo();
         }
-        
-        
+
+
         grid = GetComponent<Grid>();
+        player = GetComponentInChildren<Player>();
+        player.PlayerDeathEvent.AddListener(GameOver);
         
         RegisterEnemies();
         RegisterUnsplurtables();
@@ -96,27 +102,46 @@ public class LevelManager : MonoBehaviour
             tileInfo[IndexTo1D(cellSplurt)].covered = 1;
         }
 
-        CheckLevelOver();
+        if (CheckLevelOver())
+        {
+            NextLevel();
+        }
     }
 
-    public void CheckLevelOver()
+    public bool CheckLevelOver()
     {
-        bool allTrue = true;
-        
         foreach (var t in tileInfo)
         {
             if (t.covered != 1)
             {
-                allTrue = false;
-                break;
+                return false;
             }
         }
-        
-        if (allTrue)
+
+        return true;
+    }
+
+    private void GameOver()
+    {
+        var scripts = GetComponentsInChildren<MonoBehaviour>();
+        foreach (var s in scripts)
         {
-            print("Level finished");
+            s.enabled = false;
         }
-        
+        LevelFailed.Invoke();
+    }
+
+    private void NextLevel()
+    {
+        if (SceneManager.GetActiveScene().name == "GameLoop")
+        {
+            print("Level win conditions have been met.");
+            return;
+        }
+
+
+        var currentScene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentScene + 1);
     }
 
     int IndexTo1D(Vector3Int cell)
@@ -124,16 +149,14 @@ public class LevelManager : MonoBehaviour
         var index = cell.y * size.x + cell.x;
         return index;
     }
-
-    // Called every time an enemy dies, checks if win condition (not yet implemented) is met. 
+    
     private void CheckEnd(Enemy deadEnemy)
     {
         enemies.Remove(deadEnemy);
+        if (enemies.Count != 0) return;
+        if (CheckLevelOver()) return;
+        GameOver();
 
-        if (enemies.Count == 0)
-        {
-            print("All enemies are dead!");
-        }
     }
 }
 

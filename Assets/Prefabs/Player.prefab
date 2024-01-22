@@ -134,6 +134,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f1a384740ad534a86571d165da011a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerDeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
   movementSpeed: 40
   dodgeSpeed: 600
 --- !u!114 &4022861764858638622
@@ -289,7 +292,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0000002682209, y: -0.078288674}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -300,7 +303,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.3131557, y: 1.5323632}
   m_EdgeRadius: 0
 --- !u!114 &8141320667716894005
 MonoBehaviour:

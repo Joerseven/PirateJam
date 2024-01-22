@@ -7,11 +7,12 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.SearchService;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
     public static Player Instance;
-    public UnityEvent playerDeathEvent;
+    public UnityEvent PlayerDeathEvent;
 
     public enum Direction
     {
@@ -64,7 +65,7 @@ public class Player : MonoBehaviour
         fireButton.canceled += _ => { FinishSwipe(); };
 
         playerControls.Player.Dodge.performed += Dodge;
-        playerDeathEvent.AddListener(PlayerDeath);
+        PlayerDeathEvent.AddListener(PlayerDeath);
     }
     
     private void Update()
