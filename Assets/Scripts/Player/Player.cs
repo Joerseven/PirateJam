@@ -163,11 +163,15 @@ public class Player : MonoBehaviour
     private void Dodge(InputAction.CallbackContext context)
     {
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
+        
         if (splurtInfo.spurtAction == null)
         {
             rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+            return;
         }
-        
+
+        splurtInfo.spurtAction(this);
+
     }
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)

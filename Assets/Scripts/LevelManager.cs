@@ -88,13 +88,14 @@ public class LevelManager : MonoBehaviour
         playerTransform.position = grid.GetCellCenterWorld(grid.WorldToCell(spawnpoint.position));
     }
 
-    public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell)
+    public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell, SpurtInfo spurtInfo)
     {
         var uDelta = ((Vector3)(targetCell - originCell)).normalized;
         for (int i = 0; i <= (int)((targetCell - originCell).magnitude); i++)
         {
             Vector3Int cellSplurt = originCell + new Vector3Int((int)uDelta.x, (int)uDelta.y, 0) * i;
             tileInfo[IndexTo1D(cellSplurt)].covered = 1;
+            tileInfo[IndexTo1D(cellSplurt)].spurtInfo = spurtInfo;
         }
 
         if (CheckLevelOver())

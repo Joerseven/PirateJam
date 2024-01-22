@@ -14,6 +14,7 @@ public class ButterActions : MonoBehaviour
     [SerializeField] private float animationTime = 1.0f;
 
     private Enemy enemyBase;
+    private Spurt spurt;
     
     private Rigidbody2D _rb;
 
@@ -46,6 +47,13 @@ public class ButterActions : MonoBehaviour
         enemyBase = GetComponent<Enemy>();
         enemyBase.CanDamage += IsDamageable;
         animator = GetComponentInChildren<Animator>();
+        spurt.SpurtInfo = new SpurtInfo();
+        spurt.SpurtInfo.spurtAction = OnPlayerRoll;
+    }
+
+    private void OnPlayerRoll(Player player)
+    {
+        // Transform into sliding butter thing.
     }
 
     public void InitButter(GameObject t)
