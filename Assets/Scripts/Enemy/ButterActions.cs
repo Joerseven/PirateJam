@@ -24,6 +24,7 @@ public class ButterActions : MonoBehaviour
     private Grid grid;
     private float coolDown;
     private float delta;
+    private Animator animator;
 
     enum ButterState
     {
@@ -44,6 +45,7 @@ public class ButterActions : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         enemyBase = GetComponent<Enemy>();
         enemyBase.CanDamage += IsDamageable;
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void InitButter(GameObject t)
@@ -68,6 +70,7 @@ public class ButterActions : MonoBehaviour
         enemyPositionOnGrid = grid.WorldToCell(transform.position);
         playerPositionOnGrid = grid.WorldToCell(target.transform.position);
         
+        
         if (enemyBase.IsDead)
         {
             return;
@@ -84,13 +87,13 @@ public class ButterActions : MonoBehaviour
                     {
                         transform.position = gridTarget;
                         state = ButterState.Recharging;
+                        animator.SetTrigger("hasDoneCharging");
                         coolDown = chargeCooldown;
                     }
             
                     var distanceVec = gridTarget - originPos;
                     var deltaVec = tValue * tValue * tValue * distanceVec;
                     transform.position = originPos + deltaVec;
-            
                     delta += Time.deltaTime;
                     break;
             
@@ -112,6 +115,7 @@ public class ButterActions : MonoBehaviour
                     gridTarget = GetTargetPos();
                     originPos = transform.position;
                     delta = 0;
+                    animator.SetTrigger("charge");
                 }
                 break;
         }
