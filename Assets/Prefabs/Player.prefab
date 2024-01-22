@@ -139,6 +139,7 @@ MonoBehaviour:
       m_Calls: []
   movementSpeed: 40
   dodgeSpeed: 600
+  invuln: 0
 --- !u!114 &4022861764858638622
 MonoBehaviour:
   m_ObjectHideFlags: 0

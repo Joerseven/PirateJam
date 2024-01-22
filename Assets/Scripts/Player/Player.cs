@@ -149,6 +149,7 @@ public class Player : MonoBehaviour
 
     public void HitPlayer()
     {
+        if (invuln) return;
         PlayerDeathEvent.Invoke();
     }
 
