@@ -169,7 +169,7 @@ public class Player : MonoBehaviour
     {
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
         
-        if (splurtInfo.SpurtAction == null)
+        if (splurtInfo?.SpurtAction == null)
         {
             rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
             return;

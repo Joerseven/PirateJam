@@ -147,6 +147,8 @@ public class LevelManager : MonoBehaviour
 
     public TileInfo GetTileInfo(Vector3Int cell)
     {
+        cell.x = (int)MathF.Min(cell.x, size.x);
+        cell.y = (int)MathF.Min(cell.y, size.y);
         return tileInfo[IndexTo1D(cell)];
     }
 
@@ -162,7 +164,6 @@ public class LevelManager : MonoBehaviour
         if (enemies.Count != 0) return;
         if (CheckLevelOver()) return;
         GameOver();
-
     }
 }
 
