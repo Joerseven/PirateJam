@@ -17,6 +17,7 @@ public class Shooter : MonoBehaviour, IEnemy
     [SerializeField] Sprite unsqueezed;
     [SerializeField] Sprite squeezed;
     private Animator animator;
+    [SerializeField] private Transform target;
 
     private bool canAttack = true;
 

@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     private InputAction swipePosition; 
     private Vector2 swipeStart;
     private Vector2 swingDirection;
+    public Vector2 Facing;
     private Hurtbox hurtbox;
     private Animator animator;
 
@@ -89,18 +90,22 @@ public class Player : MonoBehaviour
         if (inputValue.x >= 0.7)
         {
             animator.SetBool("isWalkingRight", true);
+            Facing = Vector2.right;
         }
         else if (inputValue.x <= -0.7)
         {
             animator.SetBool("isWalkingLeft", true);
+            Facing = Vector2.left;
         }
         else if (inputValue.y >= 0.7)
         {
             animator.SetBool("isWalkingUp", true);
+            Facing = Vector2.up;
         }
         else if (inputValue.y <= -0.7)
         {
             animator.SetBool("isWalkingDown", true);
+            Facing = Vector2.down;
         }
     }
 
@@ -164,13 +169,13 @@ public class Player : MonoBehaviour
     {
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
         
-        if (splurtInfo.spurtAction == null)
+        if (splurtInfo.SpurtAction == null)
         {
             rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
             return;
         }
 
-        splurtInfo.spurtAction(this);
+        splurtInfo.SpurtAction(this);
 
     }
 

@@ -15,6 +15,7 @@ public class ButterActions : MonoBehaviour
 
     private Enemy enemyBase;
     private Spurt spurt;
+    private LevelManager level;
     
     private Rigidbody2D _rb;
 
@@ -46,14 +47,24 @@ public class ButterActions : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         enemyBase = GetComponent<Enemy>();
         enemyBase.CanDamage += IsDamageable;
+        level = GetComponentInParent<LevelManager>();
         animator = GetComponentInChildren<Animator>();
+        spurt = GetComponentInChildren<Spurt>();
         spurt.SpurtInfo = new SpurtInfo();
-        spurt.SpurtInfo.spurtAction = OnPlayerRoll;
+        spurt.SpurtInfo.SpurtAction = OnPlayerRoll;
     }
 
     private void OnPlayerRoll(Player player)
     {
-        // Transform into sliding butter thing.
+        var direction = player.Facing;
+        var nextCell = grid.WorldToCell(player.transform.position) + new Vector3Int((int)direction.x, (int)direction.y, 0);
+        while (level.GetTileInfo(nextCell).spurtInfo == spurt.SpurtInfo)
+        {
+            print("Go more");
+            nextCell += new Vector3Int((int)direction.x, (int)direction.y, 0);
+        }
+        
+
     }
 
     public void InitButter(GameObject t)

@@ -69,6 +69,8 @@ public class Spurt : MonoBehaviour
     private void ResizeSpurt(Vector2 direction)
     {
         targetCell = GetSpurtTarget(originCell, direction);
+        
+        
 
         cellDelta = targetCell - originCell;
         var scaleFactor = new Vector3(Mathf.Abs(cellDelta.x), Mathf.Abs(cellDelta.y), Mathf.Abs(cellDelta.z));
@@ -78,6 +80,11 @@ public class Spurt : MonoBehaviour
             scaleFactor.z * transform.localScale.z);
         
         transform.position += (Vector3)cellDelta / 2.0f;
+
+        if (SpurtInfo == null) return;
+        
+        SpurtInfo.StartingCell = originCell;
+        SpurtInfo.EndingCell = targetCell;
     }
 
     private void RegisterSpurtOnLevel()
@@ -144,6 +151,8 @@ public class Spurt : MonoBehaviour
 
 public class SpurtInfo
 { 
-    public delegate void SpurtAction(Player player);
-    public SpurtAction spurtAction;
+    public delegate void DSpurtAction(Player player);
+    public DSpurtAction SpurtAction;
+    public Vector3Int StartingCell;
+    public Vector3Int EndingCell;
 }
