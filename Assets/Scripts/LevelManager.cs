@@ -97,6 +97,8 @@ public class LevelManager : MonoBehaviour
 
     public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell, SpurtInfo spurtInfo)
     {
+        originCell.z = 0;
+        targetCell.z = 0;
         var uDelta = ((Vector3)(targetCell - originCell)).normalized;
         for (int i = 0; i <= (int)((targetCell - originCell).magnitude); i++)
         {

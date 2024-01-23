@@ -150,6 +150,8 @@ MonoBehaviour:
   attackCooldown: 2
   unsqueezed: {fileID: 21300000, guid: 7f63fe763f873a74c84232849a7e9d45, type: 3}
   squeezed: {fileID: 21300000, guid: a95ab6f3d1de0bd48961cc0311ad41c2, type: 3}
+  target: {fileID: 0}
+  multipleProjectiles: 1
 --- !u!114 &6546596598154020162
 MonoBehaviour:
   m_ObjectHideFlags: 0
