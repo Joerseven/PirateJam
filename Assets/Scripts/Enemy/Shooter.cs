@@ -16,6 +16,8 @@ public class Shooter : MonoBehaviour, IEnemy
     SpriteRenderer spriteRenderer;
     [SerializeField] Sprite unsqueezed;
     [SerializeField] Sprite squeezed;
+    private Animator animator;
+    [SerializeField] private Transform target;
 
     private bool canAttack = true;
 
@@ -23,6 +25,7 @@ public class Shooter : MonoBehaviour, IEnemy
     {
         baseEnemy = GetComponent<Enemy>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void Attack()
@@ -49,13 +52,17 @@ public class Shooter : MonoBehaviour, IEnemy
         if (baseEnemy.IsDead) return;
         if (Vector2.Distance(transform.position, Player.Instance.transform.position) < attackRange)
         {
+            animator.SetTrigger("attack");
             Vector3 targetPos = Player.Instance.transform.position;
             Vector3 enemyPos = transform.position;
             targetPos.x = targetPos.x - enemyPos.x;
             targetPos.y = targetPos.y - enemyPos.y;
             float angle = Mathf.Atan2(targetPos.x, targetPos.y) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+            return;
         }
+
+        animator.SetTrigger("stopattack");
     }
 
     private IEnumerator AttackingRoutine()
@@ -64,15 +71,13 @@ public class Shooter : MonoBehaviour, IEnemy
         Vector2 targetDir = Player.Instance.transform.position - transform.position;
         GameObject newBullet = Instantiate(enemyProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
         newBullet.transform.right = targetDir;
-        StartCoroutine(SqueezeBottle());
+        SqueezeBottle();
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }
 
-    private IEnumerator SqueezeBottle()
+    private void SqueezeBottle()
     {
-        spriteRenderer.sprite = squeezed;
-        yield return new WaitForSeconds(1);
-        spriteRenderer.sprite = unsqueezed;
+        animator.SetTrigger("attack");
     }
 }

@@ -17,11 +17,17 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.TryGetComponent<Enemy>(out _))
+        {
+            return;
+        }
+        
         if (other.TryGetComponent<Player>(out var player))
         {
             player.TakeDamage(transform, knockbackAmount);
             player.HitPlayer();
         }
+        
         Destroy(this.gameObject);
     }
 

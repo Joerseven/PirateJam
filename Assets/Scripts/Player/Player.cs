@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     private InputAction swipePosition; 
     private Vector2 swipeStart;
     private Vector2 swingDirection;
+    public Vector2 Facing;
     private Hurtbox hurtbox;
     private Animator animator;
 
@@ -72,6 +73,8 @@ public class Player : MonoBehaviour
 
         playerControls.Player.Dodge.performed += Dodge;
         PlayerDeathEvent.AddListener(PlayerDeath);
+        
+        transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
     }
     
     private void Update()
@@ -87,18 +90,22 @@ public class Player : MonoBehaviour
         if (inputValue.x >= 0.7)
         {
             animator.SetBool("isWalkingRight", true);
+            Facing = Vector2.right;
         }
         else if (inputValue.x <= -0.7)
         {
             animator.SetBool("isWalkingLeft", true);
+            Facing = Vector2.left;
         }
         else if (inputValue.y >= 0.7)
         {
             animator.SetBool("isWalkingUp", true);
+            Facing = Vector2.up;
         }
         else if (inputValue.y <= -0.7)
         {
             animator.SetBool("isWalkingDown", true);
+            Facing = Vector2.down;
         }
     }
 
@@ -161,11 +168,15 @@ public class Player : MonoBehaviour
     private void Dodge(InputAction.CallbackContext context)
     {
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
-        if (splurtInfo.spurtAction == null)
+        
+        if (splurtInfo.SpurtAction == null)
         {
             rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+            return;
         }
-        
+
+        splurtInfo.SpurtAction(this);
+
     }
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)
