@@ -70,8 +70,7 @@ public class Spurt : MonoBehaviour
     {
         targetCell = GetSpurtTarget(originCell, direction);
         
-        SpurtInfo.StartingCell = originCell;
-        SpurtInfo.EndingCell = targetCell;
+        
 
         cellDelta = targetCell - originCell;
         var scaleFactor = new Vector3(Mathf.Abs(cellDelta.x), Mathf.Abs(cellDelta.y), Mathf.Abs(cellDelta.z));
@@ -81,6 +80,11 @@ public class Spurt : MonoBehaviour
             scaleFactor.z * transform.localScale.z);
         
         transform.position += (Vector3)cellDelta / 2.0f;
+
+        if (SpurtInfo == null) return;
+        
+        SpurtInfo.StartingCell = originCell;
+        SpurtInfo.EndingCell = targetCell;
     }
 
     private void RegisterSpurtOnLevel()
