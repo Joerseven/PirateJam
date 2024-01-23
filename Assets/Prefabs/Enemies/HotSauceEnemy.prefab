@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: becd5e0824b052b449ab5ad036666694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  splurtColor: {r: 0.9490197, g: 0.94117653, b: 0.8941177, a: 0}
+  splurtColor: {r: 0.64705884, g: 0.14117648, b: 0.19215688, a: 1}
 --- !u!1 &5524671577236719892
 GameObject:
   m_ObjectHideFlags: 0

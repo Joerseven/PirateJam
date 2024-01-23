@@ -2476,6 +2476,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 59935246}
     m_Modifications:
+    - target: {fileID: 1286208557925989244, guid: cf9d2d3814a66ac4bba6e3a21c39281b, type: 3}
+      propertyPath: splurtColor.b
+      value: 0.86274517
+      objectReference: {fileID: 0}
+    - target: {fileID: 1286208557925989244, guid: cf9d2d3814a66ac4bba6e3a21c39281b, type: 3}
+      propertyPath: splurtColor.g
+      value: 0.95294124
+      objectReference: {fileID: 0}
+    - target: {fileID: 1286208557925989244, guid: cf9d2d3814a66ac4bba6e3a21c39281b, type: 3}
+      propertyPath: splurtColor.r
+      value: 0.9803922
+      objectReference: {fileID: 0}
     - target: {fileID: 1629655329374997131, guid: cf9d2d3814a66ac4bba6e3a21c39281b, type: 3}
       propertyPath: m_Name
       value: RangedEnemy

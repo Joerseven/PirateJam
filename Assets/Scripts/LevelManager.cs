@@ -145,6 +145,11 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene(currentScene + 1);
     }
 
+    public TileInfo GetTileInfo(Vector3Int cell)
+    {
+        return tileInfo[IndexTo1D(cell)];
+    }
+
     int IndexTo1D(Vector3Int cell)
     {
         var index = cell.y * size.x + cell.x;
