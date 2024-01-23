@@ -18,6 +18,8 @@ public class Spurt : MonoBehaviour
     private Vector2Int levelSize;
     private LevelManager level;
 
+    public SpurtInfo SpurtInfo;
+
     [SerializeField]
     private Color splurtColor;
 
@@ -80,7 +82,7 @@ public class Spurt : MonoBehaviour
 
     private void RegisterSpurtOnLevel()
     {
-        level.AddSpurtToLevel(originCell, targetCell);
+        level.AddSpurtToLevel(originCell, targetCell, SpurtInfo);
     }
     
     private void AnimateSpurt(Vector2 direction)
