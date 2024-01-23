@@ -86,7 +86,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ReadGrid();
+        ReadGridToUI();
     }
 
     private void BeginPlay()
@@ -174,29 +174,24 @@ public class LevelManager : MonoBehaviour
 
     }
 
-    private void ReadGrid()
+    private void ReadGridToUI()
     {
         string tempString = "";
         int tempCount = 0;
-
         for (int i = 0; i < tileInfo.Length; i++)
         {
-            if (tileInfo[i].covered == 1)
+            switch (tileInfo[i].covered)
             {
-                tempString += "X";
+                case 0:
+                    tempString += "O";
+                    break;
+                case 1:
+                    tempString += "X";
+                    break;
             }
-            else if (tileInfo[i].covered == 0)
-            {
-                tempString += "O";
-            }
-
             tempCount++;
-            if (tempCount % size.x == 0)
-            {
-                tempString += "\n";
-            }
+            if (tempCount % size.x == 0) { tempString += "\n"; }
         }
-        tempString.Reverse();
         gridText.text = tempString;
     }
 }
