@@ -20,6 +20,8 @@ public class Shooter : MonoBehaviour, IEnemy
 
     private bool canAttack = true;
 
+    [SerializeField] bool multipleProjectiles = false;
+
     private void Start()
     {
         baseEnemy = GetComponent<Enemy>();
