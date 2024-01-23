@@ -80,6 +80,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""testParticles"",
+                    ""type"": ""Button"",
+                    ""id"": ""70bc6635-a8c2-41fa-aef7-ee75ed58581a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -366,6 +375,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b4710e1-25ba-424e-a6d8-e8fc117ea289"",
+                    ""path"": ""<Keyboard>/rightBracket"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""testParticles"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -959,6 +979,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Dodge = m_Player.FindAction("Dodge", throwIfNotFound: true);
         m_Player_DirectionalAttack = m_Player.FindAction("DirectionalAttack", throwIfNotFound: true);
         m_Player_Position = m_Player.FindAction("Position", throwIfNotFound: true);
+        m_Player_testParticles = m_Player.FindAction("testParticles", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1038,6 +1059,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dodge;
     private readonly InputAction m_Player_DirectionalAttack;
     private readonly InputAction m_Player_Position;
+    private readonly InputAction m_Player_testParticles;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1048,6 +1070,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Dodge => m_Wrapper.m_Player_Dodge;
         public InputAction @DirectionalAttack => m_Wrapper.m_Player_DirectionalAttack;
         public InputAction @Position => m_Wrapper.m_Player_Position;
+        public InputAction @testParticles => m_Wrapper.m_Player_testParticles;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1075,6 +1098,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Position.started += instance.OnPosition;
             @Position.performed += instance.OnPosition;
             @Position.canceled += instance.OnPosition;
+            @testParticles.started += instance.OnTestParticles;
+            @testParticles.performed += instance.OnTestParticles;
+            @testParticles.canceled += instance.OnTestParticles;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1097,6 +1123,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Position.started -= instance.OnPosition;
             @Position.performed -= instance.OnPosition;
             @Position.canceled -= instance.OnPosition;
+            @testParticles.started -= instance.OnTestParticles;
+            @testParticles.performed -= instance.OnTestParticles;
+            @testParticles.canceled -= instance.OnTestParticles;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1285,6 +1314,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnDodge(InputAction.CallbackContext context);
         void OnDirectionalAttack(InputAction.CallbackContext context);
         void OnPosition(InputAction.CallbackContext context);
+        void OnTestParticles(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

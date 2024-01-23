@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
 
     private LevelManager levelManager;
     private Grid grid;
+
+    private ParticleSystem particleSys;
     
     
     private void Awake()
@@ -174,6 +176,8 @@ public class Player : MonoBehaviour
             rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
             return;
         }
+
+        particleSys.Play();
 
         splurtInfo.SpurtAction(this);
 
