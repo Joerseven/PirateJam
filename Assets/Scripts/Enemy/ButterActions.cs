@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,19 +15,19 @@ public class ButterActions : MonoBehaviour
     [SerializeField] private float animationTime = 1.0f;
 
     private Enemy enemyBase;
-    private Spurt spurt;
-    private LevelManager level;
     
     private Rigidbody2D _rb;
 
-    private Vector3 enemyPositionOnGrid;
+    private Vector2Int levelSize;
+    private LevelManager level;
+    
+    private Vector3Int enemyPositionOnGrid;
+    private Vector3Int playerPositionOnGrid;
     private Vector3 gridTarget;
     private Vector3 originPos;
-    private Vector3 playerPositionOnGrid;
     private Grid grid;
     private float coolDown;
     private float delta;
-    private Animator animator;
 
     enum ButterState
     {
@@ -48,23 +49,7 @@ public class ButterActions : MonoBehaviour
         enemyBase = GetComponent<Enemy>();
         enemyBase.CanDamage += IsDamageable;
         level = GetComponentInParent<LevelManager>();
-        animator = GetComponentInChildren<Animator>();
-        spurt = GetComponentInChildren<Spurt>();
-        spurt.SpurtInfo = new SpurtInfo();
-        spurt.SpurtInfo.SpurtAction = OnPlayerRoll;
-    }
-
-    private void OnPlayerRoll(Player player)
-    {
-        var direction = player.Facing;
-        var nextCell = grid.WorldToCell(player.transform.position) + new Vector3Int((int)direction.x, (int)direction.y, 0);
-        while (level.GetTileInfo(nextCell).spurtInfo == spurt.SpurtInfo)
-        {
-            print("Go more");
-            nextCell += new Vector3Int((int)direction.x, (int)direction.y, 0);
-        }
-        
-
+        levelSize = level.size;
     }
 
     public void InitButter(GameObject t)
@@ -79,16 +64,17 @@ public class ButterActions : MonoBehaviour
     }
 
   
-    private void Update()
+    private void FixedUpdate()
     {
         ButterActionsStateController();
+        /*Debug.Log("Enemy grid pos: " + enemyPositionOnGrid);
+        Debug.Log("Player grid pos: " + playerPositionOnGrid);*/
     }
 
     private void ButterActionsStateController()
     {
         enemyPositionOnGrid = grid.WorldToCell(transform.position);
         playerPositionOnGrid = grid.WorldToCell(target.transform.position);
-        
         
         if (enemyBase.IsDead)
         {
@@ -106,13 +92,13 @@ public class ButterActions : MonoBehaviour
                     {
                         transform.position = gridTarget;
                         state = ButterState.Recharging;
-                        animator.SetTrigger("hasDoneCharging");
                         coolDown = chargeCooldown;
                     }
             
                     var distanceVec = gridTarget - originPos;
                     var deltaVec = tValue * tValue * tValue * distanceVec;
                     transform.position = originPos + deltaVec;
+            
                     delta += Time.deltaTime;
                     break;
             
@@ -128,13 +114,12 @@ public class ButterActions : MonoBehaviour
             
             case ButterState.Searching:
                 
-                if ((enemyPositionOnGrid - playerPositionOnGrid).magnitude <= 1)
+                if ((enemyPositionOnGrid - playerPositionOnGrid).magnitude < 5)
                 {
                     state = ButterState.Charging;
                     gridTarget = GetTargetPos();
                     originPos = transform.position;
                     delta = 0;
-                    animator.SetTrigger("charge");
                 }
                 break;
         }
@@ -149,7 +134,19 @@ public class ButterActions : MonoBehaviour
     private Vector3 GetTargetPos()
     {
         Vector3 difference = playerPositionOnGrid - enemyPositionOnGrid;
-
+        
+        /* - Fix this functionality  - It should extend the slide of the butter to the edge of the grid if the player is aligned with either the x or y axis. */
+        if (Mathf.Abs(difference.x) == 0.0f)
+        {
+            return new Vector3(transform.position.x, grid.CellToWorld(GetMaxChargeDistance(enemyPositionOnGrid, difference.normalized)).y);
+        }
+        
+        if (Mathf.Abs(difference.y) == 0.0f)
+        {
+            return new Vector3(grid.CellToWorld(GetMaxChargeDistance(enemyPositionOnGrid, difference.normalized)).x, transform.position.y);
+        }
+        
+        
         if (Mathf.Abs(difference.x) > 0.9f || Mathf.Abs(difference.y) > 0.9f)
         {
             Vector3 newPos = transform.position;
@@ -166,7 +163,7 @@ public class ButterActions : MonoBehaviour
         }
         return transform.position;
     }
-    
+
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -174,5 +171,23 @@ public class ButterActions : MonoBehaviour
         {
             player.HitPlayer();
         }
+    }
+    
+    private Vector3Int GetMaxChargeDistance(Vector3Int origin, Vector2 direction)
+    {
+        var furthestPossibleCell = new Vector3Int(
+            origin.x + levelSize.x * (int)direction.x, 
+            origin.y + levelSize.y * (int)direction.y, 
+            0);
+
+        furthestPossibleCell.Clamp(new Vector3Int(0, 0, 0),
+            new Vector3Int(levelSize.x - 1, levelSize.y - 1, 0));
+
+        while (!level.CanCover(furthestPossibleCell))
+        {
+            furthestPossibleCell -= new Vector3Int((int)direction.x, (int)direction.y, 0);
+        }
+        
+        return furthestPossibleCell;
     }
 }

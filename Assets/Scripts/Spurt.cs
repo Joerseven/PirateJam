@@ -69,9 +69,6 @@ public class Spurt : MonoBehaviour
     private void ResizeSpurt(Vector2 direction)
     {
         targetCell = GetSpurtTarget(originCell, direction);
-        
-        
-
         cellDelta = targetCell - originCell;
         var scaleFactor = new Vector3(Mathf.Abs(cellDelta.x), Mathf.Abs(cellDelta.y), Mathf.Abs(cellDelta.z));
         
