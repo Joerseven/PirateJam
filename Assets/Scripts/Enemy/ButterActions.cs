@@ -5,8 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
-
-public class ButterActions : MonoBehaviour
+public class ButterActions : MonoBehaviour, IEnemyType
 {
 
     [SerializeField] private GameObject target;
@@ -169,6 +168,11 @@ public class ButterActions : MonoBehaviour
         return false;
     }
 
+    private void ButterSpurtAction()
+    {
+        
+    }
+
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -194,5 +198,9 @@ public class ButterActions : MonoBehaviour
         }
         
         return furthestPossibleCell;
+    }
+
+    public void AddSpurtAction(ref SpurtInfo spurt)
+    {
     }
 }

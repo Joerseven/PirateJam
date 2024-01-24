@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.Processors;
+using UnityEngine.U2D;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Enemy : MonoBehaviour
 
     public bool IsDead;
     private Collider2D enemyCollider;
+    private IEnemyType enemySubType;
 
     private Grid grid;
     
@@ -24,6 +26,7 @@ public class Enemy : MonoBehaviour
         grid = GetComponentInParent<Grid>();
         enemyCollider = GetComponent<Collider2D>();
         spurt = GetComponentInChildren<Spurt>(true);
+        enemySubType = GetComponent<IEnemyType>();
         
         transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
     }
@@ -40,7 +43,9 @@ public class Enemy : MonoBehaviour
 
     void TriggerSpurt(Vector2 direction)
     {
-        spurt.CreateSpurt(direction);
+        SpurtInfo spurtInfo = new SpurtInfo();
+        enemySubType.AddSpurtAction(ref spurtInfo);
+        spurt.CreateSpurt(direction, spurtInfo);
     }
 
     public void Kill()
@@ -71,4 +76,9 @@ public class Enemy : MonoBehaviour
         
     }
     
+}
+
+public interface IEnemyType
+{
+    public void AddSpurtAction(ref SpurtInfo spurt);
 }
