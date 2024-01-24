@@ -92,9 +92,11 @@ public class ButterActions : MonoBehaviour
 
                     if (tValue >= 1)
                     {
+                        
                         transform.position = gridTarget;
                         state = ButterState.Recharging;
                         coolDown = chargeCooldown;
+                        animator.SetTrigger("hasDoneCharging");
                         break;
                     }
             
@@ -110,7 +112,6 @@ public class ButterActions : MonoBehaviour
                 if (coolDown <= 0)
                 {
                     state = ButterState.Searching;
-                    animator.SetTrigger("hasDoneCharging");
                     break;
                 }
                 coolDown -= Time.deltaTime;
