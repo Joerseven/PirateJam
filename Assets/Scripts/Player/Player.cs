@@ -68,15 +68,29 @@ public class Player : MonoBehaviour
         var fireButton = playerControls.Player.Fire;
         swipePosition = playerControls.Player.Position;
         // This is working off the resolution rather than a normalised coordinate :/
-        fireButton.performed += _ => { swipeStart = swipePosition.ReadValue<Vector2>(); };
-        fireButton.canceled += _ => { FinishSwipe(); };
+        fireButton.performed += StartSwipe;
+        fireButton.canceled += FinishSwipe;
 
         playerControls.Player.Dodge.performed += Dodge;
         PlayerDeathEvent.AddListener(PlayerDeath);
         
         transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
     }
-    
+
+    private void StartSwipe(InputAction.CallbackContext context)
+    {
+        
+        swipeStart = swipePosition.ReadValue<Vector2>();
+    }
+
+    private void OnDisable()
+    {
+        var fireButton = playerControls.Player.Fire;
+        fireButton.performed -= StartSwipe;
+        fireButton.canceled -= FinishSwipe;
+        playerControls.Player.Dodge.performed -= Dodge;
+    }
+
     private void Update()
     {
         
@@ -109,7 +123,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void FinishSwipe()
+    private void FinishSwipe(InputAction.CallbackContext context)
     {
         Vector2 delta = swipePosition.ReadValue<Vector2>() - swipeStart;
         if (delta.magnitude < 100) return;
@@ -169,7 +183,7 @@ public class Player : MonoBehaviour
     {
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
         
-        if (splurtInfo.SpurtAction == null)
+        if (splurtInfo?.SpurtAction == null)
         {
             rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
             return;

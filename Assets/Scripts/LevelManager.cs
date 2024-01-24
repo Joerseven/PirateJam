@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -15,10 +13,6 @@ public class LevelManager : MonoBehaviour
     private Grid grid;
     private TileInfo[] tileInfo;
     public UnityEvent LevelFailed;
-
-    [SerializeField] TextMeshProUGUI gridText;
-
-
 
     public Vector2Int size;
 
@@ -50,7 +44,6 @@ public class LevelManager : MonoBehaviour
         // TODO: Move this function away when adding the choosing 'cards' phase before the level.   
         BeginPlay();
     } 
-
     void RegisterEnemies()
     {
         enemies = GetComponentsInChildren<Enemy>().ToList();
@@ -86,7 +79,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ReadGridToUI();
+        
     }
 
     private void BeginPlay()
@@ -95,10 +88,15 @@ public class LevelManager : MonoBehaviour
         playerTransform.position = grid.GetCellCenterWorld(grid.WorldToCell(spawnpoint.position));
     }
 
-    public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell, SpurtInfo spurtInfo)
+    
+    /*
+     *    Add enemy type as a param, use IEnemy interface maybe to change spurtinfo. Once spurt info has been changed
+     *      use levelManager.GetSplurtInfo(grid.WorldToCell(transform.position)); to register damage for
+     *      whatever game object wants to be damaged.
+     */
+    
+    public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell, SpurtInfo spurtInfo) 
     {
-        originCell.z = 0;
-        targetCell.z = 0;
         var uDelta = ((Vector3)(targetCell - originCell)).normalized;
         for (int i = 0; i <= (int)((targetCell - originCell).magnitude); i++)
         {
@@ -156,6 +154,8 @@ public class LevelManager : MonoBehaviour
 
     public TileInfo GetTileInfo(Vector3Int cell)
     {
+        cell.x = (int)MathF.Min(cell.x, size.x);
+        cell.y = (int)MathF.Min(cell.y, size.y);
         return tileInfo[IndexTo1D(cell)];
     }
 
@@ -164,6 +164,12 @@ public class LevelManager : MonoBehaviour
         var index = cell.y * size.x + cell.x;
         return index;
     }
+
+    public bool CheckBounds(Vector3Int cell)
+    {
+        if (cell.x >= size.x || cell.x < 0 || cell.y >= size.y || cell.y < 0) return false;
+        return true;
+    }
     
     private void CheckEnd(Enemy deadEnemy)
     {
@@ -171,29 +177,8 @@ public class LevelManager : MonoBehaviour
         if (enemies.Count != 0) return;
         if (CheckLevelOver()) return;
         GameOver();
-
     }
-
-    private void ReadGridToUI()
-    {
-        string tempString = "";
-        int tempCount = 0;
-        for (int i = 0; i < tileInfo.Length; i++)
-        {
-            switch (tileInfo[i].covered)
-            {
-                case 0:
-                    tempString += "O";
-                    break;
-                case 1:
-                    tempString += "X";
-                    break;
-            }
-            tempCount++;
-            if (tempCount % size.x == 0) { tempString += "\n"; }
-        }
-        gridText.text = tempString;
-    }
+    
 }
 
 public class TileInfo
