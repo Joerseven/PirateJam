@@ -28,6 +28,7 @@ public class ButterActions : MonoBehaviour
     private Grid grid;
     private float coolDown;
     private float delta;
+    private Animator animator;
 
     enum ButterState
     {
@@ -47,6 +48,7 @@ public class ButterActions : MonoBehaviour
         grid = GetComponentInParent<Grid>();
         _rb = GetComponent<Rigidbody2D>();
         enemyBase = GetComponent<Enemy>();
+        animator = GetComponentInChildren<Animator>();
         enemyBase.CanDamage += IsDamageable;
         level = GetComponentInParent<LevelManager>();
         levelSize = level.size;
@@ -93,6 +95,7 @@ public class ButterActions : MonoBehaviour
                         transform.position = gridTarget;
                         state = ButterState.Recharging;
                         coolDown = chargeCooldown;
+                        break;
                     }
             
                     var distanceVec = gridTarget - originPos;
@@ -107,6 +110,8 @@ public class ButterActions : MonoBehaviour
                 if (coolDown <= 0)
                 {
                     state = ButterState.Searching;
+                    animator.SetTrigger("hasDoneCharging");
+                    break;
                 }
                 coolDown -= Time.deltaTime;
                 
@@ -114,10 +119,11 @@ public class ButterActions : MonoBehaviour
             
             case ButterState.Searching:
                 
-                if ((enemyPositionOnGrid - playerPositionOnGrid).magnitude < 5)
+                if (GetTargetPos(out var targetPos))
                 {
                     state = ButterState.Charging;
-                    gridTarget = GetTargetPos();
+                    animator.SetTrigger("charge");
+                    gridTarget = targetPos;
                     originPos = transform.position;
                     delta = 0;
                 }
@@ -131,37 +137,35 @@ public class ButterActions : MonoBehaviour
     }
     
     
-    private Vector3 GetTargetPos()
+    private bool GetTargetPos(out Vector3 targetPos)
     {
-        Vector3 difference = playerPositionOnGrid - enemyPositionOnGrid;
+        targetPos = Vector3.zero;
+        var currentPos = grid.WorldToCell(transform.position);
+        var playerPos = grid.WorldToCell(target.transform.position);
         
-        /* - Fix this functionality  - It should extend the slide of the butter to the edge of the grid if the player is aligned with either the x or y axis. */
-        if (Mathf.Abs(difference.x) == 0.0f)
+        // Mixing vec2s and 3s is not coolio in the hoolio. 
+        currentPos.z = 0;
+        playerPos.z = 0;
+        
+        var diff = playerPos - currentPos;
+        if (diff.magnitude == 0) return false;
+        var unitDiff = new Vector3Int(diff.x / (int)diff.magnitude, diff.y / (int)diff.magnitude, 0);
+        var tileToCheck = currentPos;
+
+        if (diff.x != 0 && diff.y != 0) return false;
+        
+        while (level.CheckBounds(tileToCheck + unitDiff) && level.GetTileInfo(tileToCheck + unitDiff).canCover)
         {
-            return new Vector3(transform.position.x, grid.CellToWorld(GetMaxChargeDistance(enemyPositionOnGrid, difference.normalized)).y);
+            tileToCheck += unitDiff;
         }
-        
-        if (Mathf.Abs(difference.y) == 0.0f)
+
+        if (tileToCheck != currentPos && diff.magnitude <= (tileToCheck - currentPos).magnitude)
         {
-            return new Vector3(grid.CellToWorld(GetMaxChargeDistance(enemyPositionOnGrid, difference.normalized)).x, transform.position.y);
+            targetPos = grid.GetCellCenterWorld(tileToCheck);
+            return true;
         }
-        
-        
-        if (Mathf.Abs(difference.x) > 0.9f || Mathf.Abs(difference.y) > 0.9f)
-        {
-            Vector3 newPos = transform.position;
-            switch (Mathf.Abs(difference.x) >= Mathf.Abs(difference.y))
-            {
-                case true:
-                    _ = difference.x >= 0 ? newPos.x += 1 : newPos.x -= 1;
-                    break;
-                case false:
-                    _ = difference.y >= 0 ? newPos.y += 1 : newPos.y -= 1;
-                    break;
-            }
-            return newPos;
-        }
-        return transform.position;
+
+        return false;
     }
 
 

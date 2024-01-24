@@ -164,6 +164,12 @@ public class LevelManager : MonoBehaviour
         var index = cell.y * size.x + cell.x;
         return index;
     }
+
+    public bool CheckBounds(Vector3Int cell)
+    {
+        if (cell.x >= size.x || cell.x < 0 || cell.y >= size.y || cell.y < 0) return false;
+        return true;
+    }
     
     private void CheckEnd(Enemy deadEnemy)
     {
