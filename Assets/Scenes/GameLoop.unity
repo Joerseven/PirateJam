@@ -296,8 +296,8 @@ MonoBehaviour:
   LevelFailed:
     m_PersistentCalls:
       m_Calls: []
-  gridText: {fileID: 728310496}
   size: {x: 5, y: 5}
+  gridText: {fileID: 728310496}
 --- !u!1 &70368159
 GameObject:
   m_ObjectHideFlags: 0
