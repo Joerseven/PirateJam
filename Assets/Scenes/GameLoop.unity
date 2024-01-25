@@ -2679,6 +2679,7 @@ GameObject:
   - component: {fileID: 1769170428}
   - component: {fileID: 1769170429}
   - component: {fileID: 1769170430}
+  - component: {fileID: 1769170431}
   m_Layer: 0
   m_Name: swipe
   m_TagString: Untagged
@@ -2694,13 +2695,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769170427}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: -0.02, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1312677513}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!212 &1769170429
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2774,6 +2775,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1769170431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769170427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd40b4d2cf9f85419e7fa5d2ff09085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 1769170430}
+  swipeAnimations:
+  - {fileID: 7400000, guid: 744f1276946ace848a49ae39ea4aa67c, type: 2}
 --- !u!4 &1892343588 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6543510250769487837, guid: cf9d2d3814a66ac4bba6e3a21c39281b, type: 3}
@@ -2859,7 +2875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2349359977685745249, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2434321560141928865, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_Enabled
@@ -2893,6 +2909,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.adaptiveTilingThreshold
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4120968477622467309, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
+      propertyPath: swipe
+      value: 
+      objectReference: {fileID: 1769170430}
+    - target: {fileID: 4120968477622467309, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
+      propertyPath: swipeAnim
+      value: 
+      objectReference: {fileID: 1769170431}
     - target: {fileID: 7597305790914179920, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_LocalScale.x
       value: 1

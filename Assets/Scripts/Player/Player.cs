@@ -43,8 +43,10 @@ public class Player : MonoBehaviour
 
     private LevelManager levelManager;
     private Grid grid;
-    
-    
+
+
+
+    [SerializeField] private swipeAnimController swipeAnim;
     private void Awake()
     {
         Instance = this;
@@ -80,7 +82,6 @@ public class Player : MonoBehaviour
 
     private void StartSwipe(InputAction.CallbackContext context)
     {
-        
         swipeStart = swipePosition.ReadValue<Vector2>();
     }
 
@@ -116,6 +117,7 @@ public class Player : MonoBehaviour
             animator.SetBool("isWalkingLeft", true);
             Facing = Vector2.left;
             
+            
         }
         else if (inputValue.y >= 0.7)
         {
@@ -150,6 +152,9 @@ public class Player : MonoBehaviour
         if (swordSwinging) return;
         swingDirection = direction;
         StartCoroutine(Swing());
+        
+        
+        swipeAnim.playSwing(swingDirection);
     }
 
     IEnumerator Swing()
