@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
+
 public class ButterActions : MonoBehaviour, IEnemyType
 {
 
@@ -14,12 +15,12 @@ public class ButterActions : MonoBehaviour, IEnemyType
     [SerializeField] private float animationTime = 1.0f;
 
     private Enemy enemyBase;
-    
+
     private Rigidbody2D _rb;
 
     private Vector2Int levelSize;
     private LevelManager level;
-    
+
     private Vector3Int enemyPositionOnGrid;
     private Vector3Int playerPositionOnGrid;
     private Vector3 gridTarget;
@@ -51,25 +52,28 @@ public class ButterActions : MonoBehaviour, IEnemyType
         enemyBase.CanDamage += IsDamageable;
         level = GetComponentInParent<LevelManager>();
         levelSize = level.size;
-        spurt = GetComponentInChildren<Spurt>();
-        spurt.SpurtInfo = new SpurtInfo();
-        spurt.SpurtInfo.SpurtAction = OnPlayerRoll;
     }
 
-    private void OnPlayerRoll(Player player)
+    private void ButterRollTo(Player player, Vector3Int targetCell)
     {
-        var direction = player.Facing;
-        var nextCell = grid.WorldToCell(player.transform.position) + new Vector3Int((int)direction.x, (int)direction.y, 0);
         
-        while (level.GetTileInfo(nextCell).spurtInfo == spurt.SpurtInfo)
+    }
+
+    private void OnPlayerRoll(Player player, Vector3Int starting, Vector3Int endCell)
+    { 
+        var direction = (Vector3)player.Facing;
+        var playerCell = grid.WorldToCell(target.transform.position);
+        var playerToStart = starting - playerCell;
+        var dotProduct = Vector3.Dot(playerToStart, direction);
+
+        if (dotProduct == playerToStart.magnitude * direction.magnitude)
         {
-            if (nextCell.y >= level.size.y || nextCell.x >= level.size.x || nextCell.y < 0 || nextCell.x < 0)
-            {
-                break;
-            }
             
-            nextCell += new Vector3Int((int)direction.x, (int)direction.y, 0);
+        } else if (dotProduct == playerToStart.magnitude * direction.magnitude * -1)
+        {
+            
         }
+
     
     }
 
@@ -222,5 +226,6 @@ public class ButterActions : MonoBehaviour, IEnemyType
 
     public void AddSpurtAction(ref SpurtInfo spurt)
     {
+        spurt.SpurtAction = OnPlayerRoll;
     }
 }

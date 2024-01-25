@@ -189,14 +189,13 @@ public class Player : MonoBehaviour
             return;
         }
 
-        splurtInfo.SpurtAction(this);
+        splurtInfo.SpurtAction(this, splurtInfo.StartingCell, splurtInfo.EndingCell);
 
     }
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)
     {
         if (invuln) return;
-        // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
         knockback.KnockBack(damageSource, knockbackAmount);
     }
 
