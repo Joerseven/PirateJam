@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
         playerControls.Player.Enable();
 
         knockback = GetComponent<Knockback>();
+        
     }
 
     private void Start()
@@ -102,15 +103,20 @@ public class Player : MonoBehaviour
         animator.SetBool("isWalkingDown", false);
         
         inputValue = playerControls.Player.Move.ReadValue<Vector2>();
+
+       
+        
         if (inputValue.x >= 0.7)
         {
             animator.SetBool("isWalkingRight", true);
             Facing = Vector2.right;
+            
         }
         else if (inputValue.x <= -0.7)
         {
             animator.SetBool("isWalkingLeft", true);
             Facing = Vector2.left;
+            
         }
         else if (inputValue.y >= 0.7)
         {
@@ -122,6 +128,7 @@ public class Player : MonoBehaviour
             animator.SetBool("isWalkingDown", true);
             Facing = Vector2.down;
         }
+        
     }
 
     private void FinishSwipe(InputAction.CallbackContext context)
