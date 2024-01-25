@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     
     private Rigidbody2D rb;
     private Knockback knockback;
+    private bool isRolling = false;
     
     
     private PlayerControls playerControls;
@@ -193,16 +194,26 @@ public class Player : MonoBehaviour
 
     private void Dodge(InputAction.CallbackContext context)
     {
+        if (isRolling) return;
+        isRolling = true;
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
         
         if (splurtInfo?.SpurtAction == null)
         {
-            rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+            rb.AddForce(inputValue * dodgeSpeed, ForceMode2D.Impulse);
+            StartCoroutine(ResetDodge());
             return;
         }
 
         splurtInfo.SpurtAction(this, splurtInfo.StartingCell, splurtInfo.EndingCell);
+        StartCoroutine(ResetDodge());
 
+    }
+
+    IEnumerator ResetDodge()
+    {
+        yield return new WaitForSeconds(1.0f);
+        isRolling = false;
     }
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)
