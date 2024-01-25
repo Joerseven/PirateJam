@@ -296,7 +296,6 @@ MonoBehaviour:
   LevelFailed:
     m_PersistentCalls:
       m_Calls: []
-  gridText: {fileID: 728310496}
   size: {x: 5, y: 5}
 --- !u!1 &70368159
 GameObject:
@@ -889,7 +888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6543510250769487837, guid: cf9d2d3814a66ac4bba6e3a21c39281b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.76074564
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6543510250769487837, guid: cf9d2d3814a66ac4bba6e3a21c39281b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1603,7 +1602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6543510250769487837, guid: 52861d8d8b668254397f41b6d7ede89d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.5214913
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6543510250769487837, guid: 52861d8d8b668254397f41b6d7ede89d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2617,7 +2616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1429839680316364873, guid: bb6cc10f65921904a927b38c4797d550, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.76074564
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1429839680316364873, guid: bb6cc10f65921904a927b38c4797d550, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2679,7 +2678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4577606101053787258, guid: 9fd0991e8427f454a87969171ebe007d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.76074564
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4577606101053787258, guid: 9fd0991e8427f454a87969171ebe007d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2745,7 +2744,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7943773117394589957, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.76074564
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7943773117394589957, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_LocalRotation.w
