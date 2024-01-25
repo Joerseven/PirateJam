@@ -70,7 +70,7 @@ public class ButterActions : MonoBehaviour, IEnemyType
             
             nextCell += new Vector3Int((int)direction.x, (int)direction.y, 0);
         }
-        
+    
     }
 
     public void InitButter(GameObject t)
