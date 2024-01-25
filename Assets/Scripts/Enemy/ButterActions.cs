@@ -58,9 +58,14 @@ public class ButterActions : MonoBehaviour
     {
         var direction = player.Facing;
         var nextCell = grid.WorldToCell(player.transform.position) + new Vector3Int((int)direction.x, (int)direction.y, 0);
+        
         while (level.GetTileInfo(nextCell).spurtInfo == spurt.SpurtInfo)
         {
-            print("Go more");
+            if (nextCell.y >= level.size.y || nextCell.x >= level.size.x || nextCell.y < 0 || nextCell.x < 0)
+            {
+                break;
+            }
+            
             nextCell += new Vector3Int((int)direction.x, (int)direction.y, 0);
         }
         
