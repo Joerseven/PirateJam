@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     private IEnemyType enemySubType;
 
     private Grid grid;
-    
+    private Animator mAnimator;
     private Spurt spurt;
     // Start is called before the first frame update
     void Start()
@@ -27,8 +27,11 @@ public class Enemy : MonoBehaviour
         enemyCollider = GetComponent<Collider2D>();
         spurt = GetComponentInChildren<Spurt>(true);
         enemySubType = GetComponent<IEnemyType>();
+        mAnimator = GetComponentInChildren<Animator>();
         
         transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
+        
+        if(mAnimator) Debug.Log("found animator");
     }
 
     void StartingLevel()
@@ -50,8 +53,10 @@ public class Enemy : MonoBehaviour
 
     public void Kill()
     {
+        mAnimator.SetTrigger("death");
         IsDead = true;
         enemyCollider.enabled = false;
+        
     }
 
     // Takes in slash direction as unit vector
