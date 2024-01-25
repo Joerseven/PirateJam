@@ -51,5 +51,10 @@ public class InGameUI : MonoBehaviour
     {
         helpText.text = text;
     }
+
+    public void ShowControls()
+    {
+        animator.SetTrigger("ViewControls");
+    }
 }
 
