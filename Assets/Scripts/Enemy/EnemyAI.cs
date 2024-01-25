@@ -38,7 +38,6 @@ public class EnemyAI : MonoBehaviour
     
     private void StateControl()
     {
-        //State machine is inprogress, needs refining before can be applied to the enemies. ATM it doesn't switch states properly based on the conditions i've set.
         switch (state)
         {
             default:

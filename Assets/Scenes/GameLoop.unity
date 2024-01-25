@@ -296,7 +296,6 @@ MonoBehaviour:
   LevelFailed:
     m_PersistentCalls:
       m_Calls: []
-  gridText: {fileID: 728310496}
   size: {x: 5, y: 5}
 --- !u!1 &70368159
 GameObject:
@@ -2723,6 +2722,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4577606101053787258, guid: 9fd0991e8427f454a87969171ebe007d, type: 3}
   m_PrefabInstance: {fileID: 2002167499}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3498789028269909121
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426741341389650308, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7226752922327036493, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
+      propertyPath: m_Name
+      value: Hot Sauce AOE Blob
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
 --- !u!1001 &7502677104056299669
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2789,3 +2845,4 @@ SceneRoots:
   - {fileID: 1236321807}
   - {fileID: 793275981}
   - {fileID: 1539347184}
+  - {fileID: 3498789028269909121}

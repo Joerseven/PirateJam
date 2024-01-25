@@ -28,6 +28,7 @@ public class ButterActions : MonoBehaviour, IEnemyType
     private float coolDown;
     private float delta;
     private Animator animator;
+    private Spurt spurt;
 
     enum ButterState
     {

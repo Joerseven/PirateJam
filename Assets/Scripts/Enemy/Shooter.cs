@@ -86,4 +86,6 @@ public class Shooter : MonoBehaviour, IEnemy, IEnemyType
     public void AddSpurtAction(ref SpurtInfo spurt)
     {
     }
+    
+    
 }
