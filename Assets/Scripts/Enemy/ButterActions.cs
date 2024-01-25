@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
+
 public class ButterActions : MonoBehaviour, IEnemyType
 {
 
@@ -14,12 +15,12 @@ public class ButterActions : MonoBehaviour, IEnemyType
     [SerializeField] private float animationTime = 1.0f;
 
     private Enemy enemyBase;
-    
+
     private Rigidbody2D _rb;
 
     private Vector2Int levelSize;
     private LevelManager level;
-    
+
     private Vector3Int enemyPositionOnGrid;
     private Vector3Int playerPositionOnGrid;
     private Vector3 gridTarget;
@@ -28,6 +29,7 @@ public class ButterActions : MonoBehaviour, IEnemyType
     private float coolDown;
     private float delta;
     private Animator animator;
+    private Collider2D col2d;
 
     enum ButterState
     {
@@ -51,6 +53,51 @@ public class ButterActions : MonoBehaviour, IEnemyType
         enemyBase.CanDamage += IsDamageable;
         level = GetComponentInParent<LevelManager>();
         levelSize = level.size;
+        col2d = GetComponent<Collider2D>();
+    }
+
+    private void ButterRollTo(Player player, Vector3Int targetCell)
+    {
+        var originVec = player.transform.position;
+        var moveVec = grid.GetCellCenterWorld(targetCell) - originVec;
+        col2d.enabled = false;
+        _rb.velocity = Vector2.zero;
+        StartCoroutine(ButterRoll(player, originVec, moveVec));
+
+    }
+
+    private IEnumerator ButterRoll(Player player, Vector3 originCell, Vector3 moveVec)
+    {
+        const float rolltime = 0.25f;
+        col2d.enabled = false;
+        _rb.velocity = Vector2.zero;
+        float t = 0;
+        while (t < rolltime)
+        {
+            t += Time.deltaTime;
+            player.transform.position = originCell + moveVec * (t / rolltime);
+            yield return null;
+        }
+
+        player.transform.position = originCell + moveVec;
+        col2d.enabled = true;
+    }
+
+
+    private void OnPlayerRoll(Player player, Vector3Int starting, Vector3Int endCell)
+    { 
+        var direction = (Vector3)player.Facing;
+        var playerCell = grid.WorldToCell(target.transform.position);
+        var playerToStart = starting - playerCell;
+        var dotProduct = Vector3.Dot(playerToStart, direction);
+
+        if (dotProduct == playerToStart.magnitude * direction.magnitude)
+        {
+            ButterRollTo(player, starting);
+        } else if (dotProduct == playerToStart.magnitude * direction.magnitude * -1)
+        {
+            ButterRollTo(player, endCell);
+        }
     }
 
     public void InitButter(GameObject t)
@@ -202,5 +249,6 @@ public class ButterActions : MonoBehaviour, IEnemyType
 
     public void AddSpurtAction(ref SpurtInfo spurt)
     {
+        spurt.SpurtAction = OnPlayerRoll;
     }
 }
