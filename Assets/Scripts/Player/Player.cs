@@ -201,6 +201,7 @@ public class Player : MonoBehaviour
         }
 
         splurtInfo.SpurtAction(this, splurtInfo.StartingCell, splurtInfo.EndingCell);
+        StartCoroutine(ResetDodge());
 
     }
 

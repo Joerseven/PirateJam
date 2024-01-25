@@ -60,8 +60,8 @@ public class ButterActions : MonoBehaviour, IEnemyType
     {
         var originVec = player.transform.position;
         var moveVec = grid.GetCellCenterWorld(targetCell) - originVec;
-        col2d.enabled = false;
-        _rb.velocity = Vector2.zero;
+        player.GetComponent<Collider2D>().enabled = false;
+        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         StartCoroutine(ButterRoll(player, originVec, moveVec));
 
     }
@@ -69,8 +69,7 @@ public class ButterActions : MonoBehaviour, IEnemyType
     private IEnumerator ButterRoll(Player player, Vector3 originCell, Vector3 moveVec)
     {
         const float rolltime = 0.25f;
-        col2d.enabled = false;
-        _rb.velocity = Vector2.zero;
+        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         float t = 0;
         while (t < rolltime)
         {
@@ -80,21 +79,28 @@ public class ButterActions : MonoBehaviour, IEnemyType
         }
 
         player.transform.position = originCell + moveVec;
-        col2d.enabled = true;
+        player.GetComponent<Collider2D>().enabled = true;
     }
 
 
     private void OnPlayerRoll(Player player, Vector3Int starting, Vector3Int endCell)
     { 
+        
         var direction = (Vector3)player.Facing;
         var playerCell = grid.WorldToCell(target.transform.position);
         var playerToStart = starting - playerCell;
         var dotProduct = Vector3.Dot(playerToStart, direction);
 
-        if (dotProduct == playerToStart.magnitude * direction.magnitude)
+        if (dotProduct == 0)
+        {
+            ButterRollTo(player,
+                Vector3.Distance(playerCell, endCell) > Vector3.Distance(playerCell, starting) ? endCell : starting);
+        }
+        else if (dotProduct == playerToStart.magnitude * direction.magnitude)
         {
             ButterRollTo(player, starting);
-        } else if (dotProduct == playerToStart.magnitude * direction.magnitude * -1)
+        } 
+        else if (dotProduct == playerToStart.magnitude * direction.magnitude * -1)
         {
             ButterRollTo(player, endCell);
         }
