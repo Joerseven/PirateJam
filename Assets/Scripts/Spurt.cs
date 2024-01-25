@@ -1,6 +1,7 @@
 using System.Collections;
 using Array = System.Array;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 
@@ -8,8 +9,8 @@ using UnityEngine;
 public class Spurt : MonoBehaviour
 {
 
-    private Vector3Int originCell;
-    private Vector3Int targetCell;
+    [DoNotSerialize] public Vector3Int originCell;
+    [DoNotSerialize] public Vector3Int targetCell;
     private Vector3 originPosition;
     private Vector3 cellDelta;
     private Vector2 spurtDirection;
@@ -55,23 +56,23 @@ public class Spurt : MonoBehaviour
         }
     }
 
-    public void CreateSpurt(Vector2 direction)
+    public void CreateSpurt(Vector2 direction, SpurtInfo info)
     {
         originCell = grid.WorldToCell(transform.position);
         originPosition = transform.position;
         particleOrigin = transform.position;
+
+        info.StartingCell = originCell;
         
-        ResizeSpurt(direction);
+        ResizeSpurt(direction, info);
         AnimateSpurt(direction);
-        RegisterSpurtOnLevel();
+        RegisterSpurtOnLevel(info);
     }
 
-    private void ResizeSpurt(Vector2 direction)
+    private void ResizeSpurt(Vector2 direction, SpurtInfo info)
     {
         targetCell = GetSpurtTarget(originCell, direction);
-        
-        
-
+        info.EndingCell = targetCell;
         cellDelta = targetCell - originCell;
         var scaleFactor = new Vector3(Mathf.Abs(cellDelta.x), Mathf.Abs(cellDelta.y), Mathf.Abs(cellDelta.z));
         
@@ -80,16 +81,11 @@ public class Spurt : MonoBehaviour
             scaleFactor.z * transform.localScale.z);
         
         transform.position += (Vector3)cellDelta / 2.0f;
-
-        if (SpurtInfo == null) return;
-        
-        SpurtInfo.StartingCell = originCell;
-        SpurtInfo.EndingCell = targetCell;
     }
 
-    private void RegisterSpurtOnLevel()
+    private void RegisterSpurtOnLevel(SpurtInfo info)
     {
-        level.AddSpurtToLevel(originCell, targetCell, SpurtInfo);
+        level.AddSpurtToLevel(originCell, targetCell, info);
     }
     
     private void AnimateSpurt(Vector2 direction)
@@ -155,4 +151,10 @@ public class SpurtInfo
     public DSpurtAction SpurtAction;
     public Vector3Int StartingCell;
     public Vector3Int EndingCell;
+
+    // public SpurtInfo(Vector3Int startingCell, Vector3Int endingCell)
+    // {
+    //     StartingCell = startingCell;
+    //     EndingCell = endingCell;
+    // }
 }

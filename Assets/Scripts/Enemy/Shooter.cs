@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 // This script attaches to an enemy that shoot a projectile towards the player. It is very basic at the moment, I'll refine it once the playtesting has been done.
-public class Shooter : MonoBehaviour, IEnemy
+public class Shooter : MonoBehaviour, IEnemy, IEnemyType
 {
     [SerializeField] private GameObject enemyProjectilePrefab;
     [SerializeField] private Transform projectileSpawnPoint;
@@ -20,6 +20,8 @@ public class Shooter : MonoBehaviour, IEnemy
     [SerializeField] private Transform target;
 
     private bool canAttack = true;
+
+    [SerializeField] bool multipleProjectiles = false;
 
     private void Start()
     {
@@ -55,8 +57,8 @@ public class Shooter : MonoBehaviour, IEnemy
             animator.SetTrigger("attack");
             Vector3 targetPos = Player.Instance.transform.position;
             Vector3 enemyPos = transform.position;
-            targetPos.x = targetPos.x - enemyPos.x;
-            targetPos.y = targetPos.y - enemyPos.y;
+            targetPos.x -= enemyPos.x;
+            targetPos.y -= enemyPos.y;
             float angle = Mathf.Atan2(targetPos.x, targetPos.y) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
             return;
@@ -79,5 +81,9 @@ public class Shooter : MonoBehaviour, IEnemy
     private void SqueezeBottle()
     {
         animator.SetTrigger("attack");
+    }
+
+    public void AddSpurtAction(ref SpurtInfo spurt)
+    {
     }
 }

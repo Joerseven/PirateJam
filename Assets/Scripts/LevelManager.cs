@@ -88,7 +88,14 @@ public class LevelManager : MonoBehaviour
         playerTransform.position = grid.GetCellCenterWorld(grid.WorldToCell(spawnpoint.position));
     }
 
-    public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell, SpurtInfo spurtInfo)
+    
+    /*
+     *    Add enemy type as a param, use IEnemy interface maybe to change spurtinfo. Once spurt info has been changed
+     *      use levelManager.GetSplurtInfo(grid.WorldToCell(transform.position)); to register damage for
+     *      whatever game object wants to be damaged.
+     */
+    
+    public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell, SpurtInfo spurtInfo) 
     {
         var uDelta = ((Vector3)(targetCell - originCell)).normalized;
         for (int i = 0; i <= (int)((targetCell - originCell).magnitude); i++)
@@ -157,6 +164,12 @@ public class LevelManager : MonoBehaviour
         var index = cell.y * size.x + cell.x;
         return index;
     }
+
+    public bool CheckBounds(Vector3Int cell)
+    {
+        if (cell.x >= size.x || cell.x < 0 || cell.y >= size.y || cell.y < 0) return false;
+        return true;
+    }
     
     private void CheckEnd(Enemy deadEnemy)
     {
@@ -165,6 +178,7 @@ public class LevelManager : MonoBehaviour
         if (CheckLevelOver()) return;
         GameOver();
     }
+    
 }
 
 public class TileInfo
