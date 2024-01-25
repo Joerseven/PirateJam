@@ -12,10 +12,8 @@ public class SwipeAnim : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void PlaySwing(Vector2 dir)wa
+    public void PlaySwing(Vector2 dir)
     {
-        
-        
         if (dir.y == 0)
         {
             if (dir.x < 0)
