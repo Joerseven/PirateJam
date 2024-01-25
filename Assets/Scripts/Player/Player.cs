@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SearchService;
 using UnityEngine.Serialization;
 
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour
 
 
 
-    [SerializeField] private swipeAnimController swipeAnim;
+    private swipeAnimController swipeAnim;
     private void Awake()
     {
         Instance = this;
@@ -62,7 +63,8 @@ public class Player : MonoBehaviour
         playerControls.Player.Enable();
 
         knockback = GetComponent<Knockback>();
-        
+
+        swipeAnim = GetComponentInChildren<swipeAnimController>(true);
     }
 
     private void Start()
