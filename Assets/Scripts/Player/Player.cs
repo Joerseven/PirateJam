@@ -44,10 +44,8 @@ public class Player : MonoBehaviour
 
     private LevelManager levelManager;
     private Grid grid;
-
-
-
-    [SerializeField] private swipeAnimController swipeAnim;
+    
+    private SwipeAnim swipeAnim;
     private void Awake()
     {
         Instance = this;
@@ -57,6 +55,7 @@ public class Player : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         levelManager = GetComponentInParent<LevelManager>();
         grid = GetComponentInParent<Grid>();
+        swipeAnim = GetComponentInChildren<SwipeAnim>();
         
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
@@ -155,7 +154,7 @@ public class Player : MonoBehaviour
         StartCoroutine(Swing());
         
         
-        swipeAnim.playSwing(swingDirection);
+        swipeAnim.PlaySwing(swingDirection);
     }
 
     IEnumerator Swing()
