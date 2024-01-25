@@ -138,9 +138,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   movementSpeed: 40
-  dodgeSpeed: 20
+  dodgeSpeed: 10
   invuln: 1
   Facing: {x: 0, y: 0}
+  swipeAnim: {fileID: 5749384236930763701}
 --- !u!114 &4022861764858638622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,7 +337,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7597305790914179920
 Transform:
   m_ObjectHideFlags: 0
@@ -480,6 +481,7 @@ GameObject:
   - component: {fileID: 4182234727828725110}
   - component: {fileID: 7143479487351925663}
   - component: {fileID: 2253539107080134739}
+  - component: {fileID: 5749384236930763701}
   m_Layer: 0
   m_Name: swipe
   m_TagString: Untagged
@@ -575,6 +577,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5749384236930763701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5923585174142466830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dd40b4d2cf9f85419e7fa5d2ff09085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 2253539107080134739}
+  swipeAnimations: []
 --- !u!1 &6486656602009490365
 GameObject:
   m_ObjectHideFlags: 0
