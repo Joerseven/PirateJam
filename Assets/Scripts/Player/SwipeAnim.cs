@@ -6,36 +6,25 @@ using UnityEngine;
 public class SwipeAnim : MonoBehaviour
 {
     private Animator animator;
-
-    public void Start()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
     }
 
     public void PlaySwing(Vector2 dir)
     {
+       
+        
         if (dir.y == 0)
         {
-            if (dir.x < 0)
-            {
-                animator.SetTrigger("hori-rev");
-            }
-            else
-            {
-                animator.SetTrigger("hori-slash");
-            }
+            //play going left
+            animator.SetTrigger(dir.x < 0 ? "hori-rev" : "hori-slash");
         }
 
-        if (dir.x != 0) return;
-        
-        switch (dir.y)
+        if (dir.x == 0)
         {
-            case < 0:
-                animator.SetTrigger("verti-rev");
-                break;
-            case > 0:
-                animator.SetTrigger("verti-slash");
-                break;
+            //play going left
+            animator.SetTrigger(dir.y > 0 ? "verti-slash" : "verti-rev");
         }
     }
 }

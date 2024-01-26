@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         levelManager = GetComponentInParent<LevelManager>();
         grid = GetComponentInParent<Grid>();
-        swipeAnim = GetComponentInChildren<SwipeAnim>();
+        swipeAnim = GetComponentInChildren<SwipeAnim>(true);
         
         playerControls = new PlayerControls();
         playerControls.Player.Enable();

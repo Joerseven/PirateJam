@@ -7161,9 +7161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd40b4d2cf9f85419e7fa5d2ff09085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  swipeAnimations:
-  - {fileID: 7400000, guid: 744f1276946ace848a49ae39ea4aa67c, type: 2}
 --- !u!1001 &2055439749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7370,6 +7367,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3047791264478266153, guid: e699b58e053cf61478de84d811213abc, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 9324282298676464d81b032f4ef8df1f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7462,7 +7463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2349359977685745249, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2434321560141928865, guid: 3f1a53b28a9630b47b7f4968feddfa69, type: 3}
       propertyPath: m_Enabled

@@ -31,7 +31,6 @@ public class Enemy : MonoBehaviour
         
         transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
         
-        if(mAnimator) Debug.Log("found animator");
     }
 
     void StartingLevel()
