@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a2b8ffa1f42a9d4b834cc28809a6f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyProjectilePrefab: {fileID: 7997931106405942584, guid: 1aed35f2e9e244c46bab05bfae60ae77, type: 3}
+  enemyProjectilePrefab: {fileID: 7226752922327036493, guid: 2d8d7520e597fd64e9e9117244745f74, type: 3}
   projectileSpawnPoint: {fileID: 5309773918324496036}
   attackRange: 2
   attackCooldown: 2

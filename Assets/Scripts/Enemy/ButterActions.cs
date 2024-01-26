@@ -30,6 +30,7 @@ public class ButterActions : MonoBehaviour, IEnemyType
     private float delta;
     private Animator animator;
     private Collider2D col2d;
+    private Spurt spurt;
 
     enum ButterState
     {
