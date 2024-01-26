@@ -42,6 +42,7 @@ public class AOE_HotSauce : MonoBehaviour
         if (other.TryGetComponent<Player>(out var player))
         {
             player.TakeDamage(transform, knockbackAmount);
+            player.HitPlayer();
         }
     }
 
