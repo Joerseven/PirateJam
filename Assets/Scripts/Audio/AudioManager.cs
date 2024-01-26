@@ -49,7 +49,13 @@ public class AudioManager : MonoBehaviour
          if(Input.GetKeyDown(KeyCode.Q)){
             this.PlayAttackSound(1);
         }
+         
+        if(Input.GetKeyDown(KeyCode.Escape)){
+            Application.Quit();
+        }
     }
+    
+    
 
 //<summary>
 //call to play main menu music. Stops gameMusic. Not generalized.
