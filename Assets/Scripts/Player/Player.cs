@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     
     private Rigidbody2D rb;
     private Knockback knockback;
+    private bool isRolling = false;
     
     
     private PlayerControls playerControls;
@@ -44,7 +45,7 @@ public class Player : MonoBehaviour
     private LevelManager levelManager;
     private Grid grid;
     
-    
+    private SwipeAnim swipeAnim;
     private void Awake()
     {
         Instance = this;
@@ -54,11 +55,13 @@ public class Player : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         levelManager = GetComponentInParent<LevelManager>();
         grid = GetComponentInParent<Grid>();
+        swipeAnim = GetComponentInChildren<SwipeAnim>();
         
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
 
         knockback = GetComponent<Knockback>();
+        
     }
 
     private void Start()
@@ -79,7 +82,6 @@ public class Player : MonoBehaviour
 
     private void StartSwipe(InputAction.CallbackContext context)
     {
-        
         swipeStart = swipePosition.ReadValue<Vector2>();
     }
 
@@ -101,15 +103,21 @@ public class Player : MonoBehaviour
         animator.SetBool("isWalkingDown", false);
         
         inputValue = playerControls.Player.Move.ReadValue<Vector2>();
+
+       
+        
         if (inputValue.x >= 0.7)
         {
             animator.SetBool("isWalkingRight", true);
             Facing = Vector2.right;
+            
         }
         else if (inputValue.x <= -0.7)
         {
             animator.SetBool("isWalkingLeft", true);
             Facing = Vector2.left;
+            
+            
         }
         else if (inputValue.y >= 0.7)
         {
@@ -121,6 +129,7 @@ public class Player : MonoBehaviour
             animator.SetBool("isWalkingDown", true);
             Facing = Vector2.down;
         }
+        
     }
 
     private void FinishSwipe(InputAction.CallbackContext context)
@@ -143,6 +152,9 @@ public class Player : MonoBehaviour
         if (swordSwinging) return;
         swingDirection = direction;
         StartCoroutine(Swing());
+        
+        
+        swipeAnim.PlaySwing(swingDirection);
     }
 
     IEnumerator Swing()
@@ -181,22 +193,31 @@ public class Player : MonoBehaviour
 
     private void Dodge(InputAction.CallbackContext context)
     {
+        if (isRolling) return;
+        isRolling = true;
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
         
         if (splurtInfo?.SpurtAction == null)
         {
-            rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+            rb.AddForce(inputValue * dodgeSpeed, ForceMode2D.Impulse);
+            StartCoroutine(ResetDodge());
             return;
         }
 
-        splurtInfo.SpurtAction(this);
+        splurtInfo.SpurtAction(this, splurtInfo.StartingCell, splurtInfo.EndingCell);
+        StartCoroutine(ResetDodge());
 
+    }
+
+    IEnumerator ResetDodge()
+    {
+        yield return new WaitForSeconds(1.0f);
+        isRolling = false;
     }
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)
     {
         if (invuln) return;
-        // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
         knockback.KnockBack(damageSource, knockbackAmount);
     }
 
