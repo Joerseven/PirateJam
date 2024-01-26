@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     
     private Rigidbody2D rb;
     private Knockback knockback;
+    private bool isRolling = false;
     
     
     private PlayerControls playerControls;
@@ -44,7 +45,7 @@ public class Player : MonoBehaviour
     private LevelManager levelManager;
     private Grid grid;
     
-    
+    private SwipeAnim swipeAnim;
     private void Awake()
     {
         Instance = this;
@@ -54,11 +55,13 @@ public class Player : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         levelManager = GetComponentInParent<LevelManager>();
         grid = GetComponentInParent<Grid>();
+        swipeAnim = GetComponentInChildren<SwipeAnim>(true);
         
         playerControls = new PlayerControls();
         playerControls.Player.Enable();
 
         knockback = GetComponent<Knockback>();
+        
     }
 
     private void Start()
@@ -68,15 +71,28 @@ public class Player : MonoBehaviour
         var fireButton = playerControls.Player.Fire;
         swipePosition = playerControls.Player.Position;
         // This is working off the resolution rather than a normalised coordinate :/
-        fireButton.performed += _ => { swipeStart = swipePosition.ReadValue<Vector2>(); };
-        fireButton.canceled += _ => { FinishSwipe(); };
+        fireButton.performed += StartSwipe;
+        fireButton.canceled += FinishSwipe;
 
         playerControls.Player.Dodge.performed += Dodge;
         PlayerDeathEvent.AddListener(PlayerDeath);
         
         transform.position = grid.GetCellCenterWorld(grid.WorldToCell(transform.position));
     }
-    
+
+    private void StartSwipe(InputAction.CallbackContext context)
+    {
+        swipeStart = swipePosition.ReadValue<Vector2>();
+    }
+
+    private void OnDisable()
+    {
+        var fireButton = playerControls.Player.Fire;
+        fireButton.performed -= StartSwipe;
+        fireButton.canceled -= FinishSwipe;
+        playerControls.Player.Dodge.performed -= Dodge;
+    }
+
     private void Update()
     {
         
@@ -87,15 +103,21 @@ public class Player : MonoBehaviour
         animator.SetBool("isWalkingDown", false);
         
         inputValue = playerControls.Player.Move.ReadValue<Vector2>();
+
+       
+        
         if (inputValue.x >= 0.7)
         {
             animator.SetBool("isWalkingRight", true);
             Facing = Vector2.right;
+            
         }
         else if (inputValue.x <= -0.7)
         {
             animator.SetBool("isWalkingLeft", true);
             Facing = Vector2.left;
+            
+            
         }
         else if (inputValue.y >= 0.7)
         {
@@ -107,9 +129,10 @@ public class Player : MonoBehaviour
             animator.SetBool("isWalkingDown", true);
             Facing = Vector2.down;
         }
+        
     }
 
-    private void FinishSwipe()
+    private void FinishSwipe(InputAction.CallbackContext context)
     {
         Vector2 delta = swipePosition.ReadValue<Vector2>() - swipeStart;
         if (delta.magnitude < 100) return;
@@ -129,6 +152,9 @@ public class Player : MonoBehaviour
         if (swordSwinging) return;
         swingDirection = direction;
         StartCoroutine(Swing());
+        
+        
+        swipeAnim.PlaySwing(swingDirection);
     }
 
     IEnumerator Swing()
@@ -167,22 +193,31 @@ public class Player : MonoBehaviour
 
     private void Dodge(InputAction.CallbackContext context)
     {
+        if (isRolling) return;
+        isRolling = true;
         var splurtInfo = levelManager.GetSplurtInfo(grid.WorldToCell(transform.position));
         
         if (splurtInfo?.SpurtAction == null)
         {
-            rb.AddForce(inputValue * (dodgeSpeed * Time.fixedDeltaTime), ForceMode2D.Impulse);
+            rb.AddForce(inputValue * dodgeSpeed, ForceMode2D.Impulse);
+            StartCoroutine(ResetDodge());
             return;
         }
 
-        splurtInfo.SpurtAction(this);
+        splurtInfo.SpurtAction(this, splurtInfo.StartingCell, splurtInfo.EndingCell);
+        StartCoroutine(ResetDodge());
 
+    }
+
+    IEnumerator ResetDodge()
+    {
+        yield return new WaitForSeconds(1.0f);
+        isRolling = false;
     }
 
     public void TakeDamage(Transform damageSource, float knockbackAmount)
     {
         if (invuln) return;
-        // This function has been set up to apply damage, knockback, anims, etc. for when the player is attacked
         knockback.KnockBack(damageSource, knockbackAmount);
     }
 

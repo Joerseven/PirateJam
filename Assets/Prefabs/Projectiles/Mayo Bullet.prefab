@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8250284241601905377}
   - component: {fileID: 2317427611857231187}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Mayo Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,7 +185,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 6cc75d9b54469e64fb9882949a3512a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

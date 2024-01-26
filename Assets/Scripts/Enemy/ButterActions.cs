@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ButterActions : MonoBehaviour
+public class ButterActions : MonoBehaviour, IEnemyType
 {
 
     [SerializeField] private GameObject target;
@@ -14,19 +15,22 @@ public class ButterActions : MonoBehaviour
     [SerializeField] private float animationTime = 1.0f;
 
     private Enemy enemyBase;
-    private Spurt spurt;
-    private LevelManager level;
-    
+
     private Rigidbody2D _rb;
 
-    private Vector3 enemyPositionOnGrid;
+    private Vector2Int levelSize;
+    private LevelManager level;
+
+    private Vector3Int enemyPositionOnGrid;
+    private Vector3Int playerPositionOnGrid;
     private Vector3 gridTarget;
     private Vector3 originPos;
-    private Vector3 playerPositionOnGrid;
     private Grid grid;
     private float coolDown;
     private float delta;
     private Animator animator;
+    private Collider2D col2d;
+    private Spurt spurt;
 
     enum ButterState
     {
@@ -46,25 +50,61 @@ public class ButterActions : MonoBehaviour
         grid = GetComponentInParent<Grid>();
         _rb = GetComponent<Rigidbody2D>();
         enemyBase = GetComponent<Enemy>();
+        animator = GetComponentInChildren<Animator>();
         enemyBase.CanDamage += IsDamageable;
         level = GetComponentInParent<LevelManager>();
-        animator = GetComponentInChildren<Animator>();
-        spurt = GetComponentInChildren<Spurt>();
-        spurt.SpurtInfo = new SpurtInfo();
-        spurt.SpurtInfo.SpurtAction = OnPlayerRoll;
+        levelSize = level.size;
+        col2d = GetComponent<Collider2D>();
     }
 
-    private void OnPlayerRoll(Player player)
+    private void ButterRollTo(Player player, Vector3Int targetCell)
     {
-        var direction = player.Facing;
-        var nextCell = grid.WorldToCell(player.transform.position) + new Vector3Int((int)direction.x, (int)direction.y, 0);
-        while (level.GetTileInfo(nextCell).spurtInfo == spurt.SpurtInfo)
-        {
-            print("Go more");
-            nextCell += new Vector3Int((int)direction.x, (int)direction.y, 0);
-        }
-        
+        var originVec = player.transform.position;
+        var moveVec = grid.GetCellCenterWorld(targetCell) - originVec;
+        player.GetComponent<Collider2D>().enabled = false;
+        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        StartCoroutine(ButterRoll(player, originVec, moveVec));
 
+    }
+
+    private IEnumerator ButterRoll(Player player, Vector3 originCell, Vector3 moveVec)
+    {
+        const float rolltime = 0.25f;
+        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        float t = 0;
+        while (t < rolltime)
+        {
+            t += Time.deltaTime;
+            player.transform.position = originCell + moveVec * (t / rolltime);
+            yield return null;
+        }
+
+        player.transform.position = originCell + moveVec;
+        player.GetComponent<Collider2D>().enabled = true;
+    }
+
+
+    private void OnPlayerRoll(Player player, Vector3Int starting, Vector3Int endCell)
+    { 
+        
+        var direction = (Vector3)player.Facing;
+        var playerCell = grid.WorldToCell(target.transform.position);
+        var playerToStart = starting - playerCell;
+        var dotProduct = Vector3.Dot(playerToStart, direction);
+
+        if (dotProduct == 0)
+        {
+            ButterRollTo(player,
+                Vector3.Distance(playerCell, endCell) > Vector3.Distance(playerCell, starting) ? endCell : starting);
+        }
+        else if (dotProduct == playerToStart.magnitude * direction.magnitude)
+        {
+            ButterRollTo(player, starting);
+        } 
+        else if (dotProduct == playerToStart.magnitude * direction.magnitude * -1)
+        {
+            ButterRollTo(player, endCell);
+        }
     }
 
     public void InitButter(GameObject t)
@@ -79,16 +119,17 @@ public class ButterActions : MonoBehaviour
     }
 
   
-    private void Update()
+    private void FixedUpdate()
     {
         ButterActionsStateController();
+        /*Debug.Log("Enemy grid pos: " + enemyPositionOnGrid);
+        Debug.Log("Player grid pos: " + playerPositionOnGrid);*/
     }
 
     private void ButterActionsStateController()
     {
         enemyPositionOnGrid = grid.WorldToCell(transform.position);
         playerPositionOnGrid = grid.WorldToCell(target.transform.position);
-        
         
         if (enemyBase.IsDead)
         {
@@ -104,15 +145,18 @@ public class ButterActions : MonoBehaviour
 
                     if (tValue >= 1)
                     {
+                        
                         transform.position = gridTarget;
                         state = ButterState.Recharging;
-                        animator.SetTrigger("hasDoneCharging");
                         coolDown = chargeCooldown;
+                        animator.SetTrigger("hasDoneCharging");
+                        break;
                     }
             
                     var distanceVec = gridTarget - originPos;
                     var deltaVec = tValue * tValue * tValue * distanceVec;
                     transform.position = originPos + deltaVec;
+            
                     delta += Time.deltaTime;
                     break;
             
@@ -121,6 +165,7 @@ public class ButterActions : MonoBehaviour
                 if (coolDown <= 0)
                 {
                     state = ButterState.Searching;
+                    break;
                 }
                 coolDown -= Time.deltaTime;
                 
@@ -128,13 +173,13 @@ public class ButterActions : MonoBehaviour
             
             case ButterState.Searching:
                 
-                if ((enemyPositionOnGrid - playerPositionOnGrid).magnitude <= 1)
+                if (GetTargetPos(out var targetPos))
                 {
                     state = ButterState.Charging;
-                    gridTarget = GetTargetPos();
+                    animator.SetTrigger("charge");
+                    gridTarget = targetPos;
                     originPos = transform.position;
                     delta = 0;
-                    animator.SetTrigger("charge");
                 }
                 break;
         }
@@ -146,27 +191,42 @@ public class ButterActions : MonoBehaviour
     }
     
     
-    private Vector3 GetTargetPos()
+    private bool GetTargetPos(out Vector3 targetPos)
     {
-        Vector3 difference = playerPositionOnGrid - enemyPositionOnGrid;
+        targetPos = Vector3.zero;
+        var currentPos = grid.WorldToCell(transform.position);
+        var playerPos = grid.WorldToCell(target.transform.position);
+        
+        // Mixing vec2s and 3s is not coolio in the hoolio. 
+        currentPos.z = 0;
+        playerPos.z = 0;
+        
+        var diff = playerPos - currentPos;
+        if (diff.magnitude == 0) return false;
+        var unitDiff = new Vector3Int(diff.x / (int)diff.magnitude, diff.y / (int)diff.magnitude, 0);
+        var tileToCheck = currentPos;
 
-        if (Mathf.Abs(difference.x) > 0.9f || Mathf.Abs(difference.y) > 0.9f)
+        if (diff.x != 0 && diff.y != 0) return false;
+        
+        while (level.CheckBounds(tileToCheck + unitDiff) && level.GetTileInfo(tileToCheck + unitDiff).canCover)
         {
-            Vector3 newPos = transform.position;
-            switch (Mathf.Abs(difference.x) >= Mathf.Abs(difference.y))
-            {
-                case true:
-                    _ = difference.x >= 0 ? newPos.x += 1 : newPos.x -= 1;
-                    break;
-                case false:
-                    _ = difference.y >= 0 ? newPos.y += 1 : newPos.y -= 1;
-                    break;
-            }
-            return newPos;
+            tileToCheck += unitDiff;
         }
-        return transform.position;
+
+        if (tileToCheck != currentPos && diff.magnitude <= (tileToCheck - currentPos).magnitude)
+        {
+            targetPos = grid.GetCellCenterWorld(tileToCheck);
+            return true;
+        }
+
+        return false;
     }
-    
+
+    private void ButterSpurtAction()
+    {
+        
+    }
+
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -174,5 +234,28 @@ public class ButterActions : MonoBehaviour
         {
             player.HitPlayer();
         }
+    }
+    
+    private Vector3Int GetMaxChargeDistance(Vector3Int origin, Vector2 direction)
+    {
+        var furthestPossibleCell = new Vector3Int(
+            origin.x + levelSize.x * (int)direction.x, 
+            origin.y + levelSize.y * (int)direction.y, 
+            0);
+
+        furthestPossibleCell.Clamp(new Vector3Int(0, 0, 0),
+            new Vector3Int(levelSize.x - 1, levelSize.y - 1, 0));
+
+        while (!level.CanCover(furthestPossibleCell))
+        {
+            furthestPossibleCell -= new Vector3Int((int)direction.x, (int)direction.y, 0);
+        }
+        
+        return furthestPossibleCell;
+    }
+
+    public void AddSpurtAction(ref SpurtInfo spurt)
+    {
+        spurt.SpurtAction = OnPlayerRoll;
     }
 }
