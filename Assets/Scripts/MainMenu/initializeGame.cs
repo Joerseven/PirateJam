@@ -34,7 +34,7 @@ public class initializeGame : MonoBehaviour
     // </summary>
     public void InitMainGame()
     {
-        SceneManager.LoadScene("GameLoop");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         audioManagerCache.StartGameMusic();
         
     }

@@ -141,7 +141,6 @@ MonoBehaviour:
   dodgeSpeed: 10
   invuln: 1
   Facing: {x: 0, y: 0}
-  swipeAnim: {fileID: 3657962004213847103}
 --- !u!114 &4022861764858638622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,9 +756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd40b4d2cf9f85419e7fa5d2ff09085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 4379053478617641929}
-  swipeAnimations:
-  - {fileID: 7400000, guid: 744f1276946ace848a49ae39ea4aa67c, type: 2}
 --- !u!1001 &7427844561857885239
 PrefabInstance:
   m_ObjectHideFlags: 0
