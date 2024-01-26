@@ -55,7 +55,6 @@ public class AudioManager : MonoBehaviour
 //call to play main menu music. Stops gameMusic. Not generalized.
 //</summary>
     public void StartMainMenuMusic(){
-        Debug.Log("mmm");
         if(!mainMenuPlaying)
         {
             mainMenuMusic.Play();
