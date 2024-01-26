@@ -84,7 +84,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""testParticles"",
                     ""type"": ""Button"",
-                    ""id"": ""70bc6635-a8c2-41fa-aef7-ee75ed58581a"",
+                    ""id"": ""82ac9c83-1813-45d1-89c6-97fdcdc8e31d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -380,7 +380,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6b4710e1-25ba-424e-a6d8-e8fc117ea289"",
+                    ""id"": ""81e7bd05-552d-45b4-861b-c51084208611"",
                     ""path"": ""<Keyboard>/rightBracket"",
                     ""interactions"": """",
                     ""processors"": """",
