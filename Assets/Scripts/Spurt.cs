@@ -147,7 +147,7 @@ public class Spurt : MonoBehaviour
 
 public class SpurtInfo
 { 
-    public delegate void DSpurtAction(Player player);
+    public delegate void DSpurtAction(Player player, Vector3Int startingCell, Vector3Int endingCell);
     public DSpurtAction SpurtAction;
     public Vector3Int StartingCell;
     public Vector3Int EndingCell;

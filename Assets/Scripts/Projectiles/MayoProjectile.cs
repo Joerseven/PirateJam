@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Projectile : MonoBehaviour
+public class MayoProjectile : MonoBehaviour
 {
     [SerializeField] private float projectileSpeed = 1.0f;
     [SerializeField] private float knockbackAmount = 5.0f;

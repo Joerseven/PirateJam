@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,9 @@ public class LevelManager : MonoBehaviour
     private List<Enemy> enemies;
     private List<Unsplurtable> unsplurtables;
     private Player player;
+
+    [SerializeField] TextMeshProUGUI gridText;
+
     // Start is called before the first frame update
 
     void Start()
@@ -79,7 +83,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        ReadGridToUI();
     }
 
     private void BeginPlay()
@@ -97,6 +101,9 @@ public class LevelManager : MonoBehaviour
     
     public void AddSpurtToLevel(Vector3Int originCell, Vector3Int targetCell, SpurtInfo spurtInfo) 
     {
+        originCell.z = 0;
+        targetCell.z = 0;
+
         var uDelta = ((Vector3)(targetCell - originCell)).normalized;
         for (int i = 0; i <= (int)((targetCell - originCell).magnitude); i++)
         {
@@ -178,7 +185,28 @@ public class LevelManager : MonoBehaviour
         if (CheckLevelOver()) return;
         GameOver();
     }
-    
+
+    private void ReadGridToUI()
+    {
+        string tempString = "";
+        int tempCount = 0;
+        for (int i = 0; i < tileInfo.Length; i++)
+        {
+            switch (tileInfo[i].covered)
+            {
+                case 0:
+                    tempString += "O";
+                    break;
+                case 1:
+                    tempString += "X";
+                    break;
+            }
+            tempCount++;
+            if (tempCount % size.x == 0) { tempString += "\n"; }
+        }
+        gridText.text = tempString;
+    }
+
 }
 
 public class TileInfo
