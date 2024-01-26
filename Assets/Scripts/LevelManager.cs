@@ -22,7 +22,10 @@ public class LevelManager : MonoBehaviour
     private Player player;
 
     [SerializeField] TextMeshProUGUI gridText;
+    [SerializeField] private float endOfLevelWaitTime = 2f;
 
+    private IEnumerator levelEnd;
+    
     // Start is called before the first frame update
 
     void Start()
@@ -47,6 +50,7 @@ public class LevelManager : MonoBehaviour
         RegisterUnsplurtables();
         // TODO: Move this function away when adding the choosing 'cards' phase before the level.   
         BeginPlay();
+        levelEnd = EndOfLevelWaitRoutine();
     } 
     void RegisterEnemies()
     {
@@ -114,7 +118,8 @@ public class LevelManager : MonoBehaviour
 
         if (CheckLevelOver())
         {
-            NextLevel();
+            StartCoroutine(levelEnd);
+           // NextLevel();
         }
     }
 
@@ -148,12 +153,13 @@ public class LevelManager : MonoBehaviour
 
     private void NextLevel()
     {
+
+     StartCoroutine(levelEnd);
         if (SceneManager.GetActiveScene().name == "GameLoop")
         {
             print("Level win conditions have been met.");
             return;
         }
-
 
         var currentScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentScene + 1);
@@ -205,6 +211,13 @@ public class LevelManager : MonoBehaviour
             if (tempCount % size.x == 0) { tempString += "\n"; }
         }
         gridText.text = tempString;
+    }
+
+    private IEnumerator EndOfLevelWaitRoutine()
+    {
+        Debug.Log("hello");
+        yield return new WaitForSeconds(endOfLevelWaitTime);
+        NextLevel();
     }
 
 }
