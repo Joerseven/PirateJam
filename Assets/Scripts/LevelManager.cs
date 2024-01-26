@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
     private Player player;
 
     [SerializeField] TextMeshProUGUI gridText;
-    [SerializeField] private float endOfLevelWaitTime = 2f;
+    private float endOfLevelWaitTime = 1.0f;
 
     private IEnumerator levelEnd;
     

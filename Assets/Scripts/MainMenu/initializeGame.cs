@@ -39,6 +39,18 @@ public class initializeGame : MonoBehaviour
         
     }
     
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+        
+    }
+    
+    public void PlayGameAgain()
+    {
+        SceneManager.LoadScene("Level One");
+        
+    }
+    
     public void ViewCredits()
     {
         animator.SetTrigger("ViewCredits");
