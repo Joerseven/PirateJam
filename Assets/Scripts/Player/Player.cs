@@ -154,7 +154,7 @@ public class Player : MonoBehaviour
         StartCoroutine(Swing());
         
         
-        //swipeAnim.PlaySwing(swingDirection);
+        swipeAnim.PlaySwing(swingDirection);
     }
 
     IEnumerator Swing()
