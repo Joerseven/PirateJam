@@ -204,13 +204,9 @@ PrefabInstance:
       value: AudioManager
       objectReference: {fileID: 0}
     - target: {fileID: 4964964262619259886, guid: b6a7c348727bfe046ae0969928096e46, type: 3}
-      propertyPath: attackClips.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4964964262619259886, guid: b6a7c348727bfe046ae0969928096e46, type: 3}
-      propertyPath: attackClips.Array.data[0]
+      propertyPath: gameMusic
       value: 
-      objectReference: {fileID: 8300000, guid: 853ffedbf6510874c9cc0e64807524ec, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4990150478630473424, guid: b6a7c348727bfe046ae0969928096e46, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -449,64 +445,13 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1147333578}
-    - target: {fileID: 1621325777132037781, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_text
-      value: 'Joe "Lua Lover" Hydon- Programmer + Version control + Design
-
-        Owen
-        "The Chemist" Taylor- Programmer + Level Design + music
-
-        Idhant "Just
-        a QA" Dabral - Art + animation + level design + programming
-
-        Ollie
-        "Just Woke Up" Perrin - Design
-
-        Adam "Sandler" Sanderson - UI + Design'
-      objectReference: {fileID: 0}
-    - target: {fileID: 2201792136080002871, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -241
-      objectReference: {fileID: 0}
-    - target: {fileID: 2201792136080002871, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 182
-      objectReference: {fileID: 0}
-    - target: {fileID: 5090517650245392808, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 397.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 5090517650245392808, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 326.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 5090517650245392808, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 135.36
-      objectReference: {fileID: 0}
-    - target: {fileID: 5090517650245392808, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -440
-      objectReference: {fileID: 0}
     - target: {fileID: 5445474309981842938, guid: e53a3e894dad2074e908c10708816e06, type: 3}
       propertyPath: m_text
-      value: 'Condiment Canvas: Breaded Adventures'
+      value: 'Condiment Canvas: BreAdventures'
       objectReference: {fileID: 0}
     - target: {fileID: 5445474309981842938, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_margin.w
-      value: 8.640675
-      objectReference: {fileID: 0}
-    - target: {fileID: 5445474309981842938, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_margin.x
-      value: -132.4899
-      objectReference: {fileID: 0}
-    - target: {fileID: 5445474309981842938, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_margin.z
-      value: -47.523533
-      objectReference: {fileID: 0}
-    - target: {fileID: 5798216516614584529, guid: e53a3e894dad2074e908c10708816e06, type: 3}
-      propertyPath: m_Name
-      value: Title Text
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

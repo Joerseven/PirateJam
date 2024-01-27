@@ -196,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &679206088938178032
 RectTransform:
   m_ObjectHideFlags: 0
@@ -637,7 +637,7 @@ GameObject:
   - component: {fileID: 6298769453790402750}
   - component: {fileID: 5445474309981842938}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Title Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -659,7 +659,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -65.76001, y: 122}
+  m_AnchoredPosition: {x: -241, y: 182}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &6298769453790402750
@@ -690,9 +690,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'CULT OF THE BREAD
-
-'
+  m_text: 'Condiment Canvas: Breaded Adventures'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -755,7 +753,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -132.4899, y: 0, z: -47.523533, w: 8.640675}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1159,8 +1157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -400}
-  m_SizeDelta: {x: 622.1749, y: 326.3485}
+  m_AnchoredPosition: {x: 135.36, y: -440}
+  m_SizeDelta: {x: 397.76, y: 326.35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2369116909690689856
 CanvasRenderer:
@@ -1190,16 +1188,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Joe "Lua Lover" Hydon
+  m_text: 'Joe "Lua Lover" Hydon- Programmer + Version control + Design
 
-    Owen "The Chemist" Taylor
+    Owen
+    "The Chemist" Taylor- Programmer + Level Design + music
 
-    Idhant "St4rman"
-    Dabral
+    Idhant "Just a QA"
+    Dabral - Art + animation + level design + programming
 
-    Ollie "Just Woke Up" Perrin
+    Ollie "Just Woke Up"
+    Perrin - Design
 
-    Adam "" Sanderson'
+    Adam "Sandler" Sanderson - UI + Design'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8650ed70fad998140936623f1bf7d071, type: 2}
   m_sharedMaterial: {fileID: 1475618356793056, guid: 8650ed70fad998140936623f1bf7d071, type: 2}

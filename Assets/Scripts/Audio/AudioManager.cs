@@ -13,16 +13,14 @@ public class AudioManager : MonoBehaviour
     
     [Header("Music")]
     [SerializeField] private AudioSource mainMenuMusic;
-    [SerializeField] private AudioSource gameMusic;
+  
     private bool mainMenuPlaying    = false;
-    private bool gameMusicPlaying   = false;
-
+ 
     [SerializeField] private AudioSource attackSoundSource;
 
     [SerializeField] private AudioClip[] attackClips;
 
-    // [Header("Player Sounds")]
-    // [SerializeField] private AudioSource
+   
     
 
     void Awake(){
@@ -32,24 +30,14 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         //testing code
-        // this.StartMainMenuMusic();
+        this.StartMainMenuMusic();
+        mainMenuPlaying = true;
     }
 
     
     void Update()
     {
-        //testing code
-        if(Input.GetKeyDown("space")){
-            Debug.Log("Space Pressed");
-            this.StartGameMusic();
-        }
-        if(Input.GetKeyDown(KeyCode.E)){
-            this.PlayAttackSound(0);
-        }
-         if(Input.GetKeyDown(KeyCode.Q)){
-            this.PlayAttackSound(1);
-        }
-         
+          
         if(Input.GetKeyDown(KeyCode.Escape)){
             Application.Quit();
         }
@@ -64,9 +52,9 @@ public class AudioManager : MonoBehaviour
         if(!mainMenuPlaying)
         {
             mainMenuMusic.Play();
-            gameMusic.Stop();
+            // gameMusic.Stop();
 
-            gameMusicPlaying = false;
+            // gameMusicPlaying = false;
             mainMenuPlaying = true;
         }
     }
@@ -74,16 +62,16 @@ public class AudioManager : MonoBehaviour
 //call to play game music. Stops title music. Not generalized.
 //</summary>
 
-    public void StartGameMusic(){
-        if(!gameMusicPlaying)
-        {
-            mainMenuMusic.Stop();
-            gameMusic.Play();
+    // public void StartGameMusic(){
+    //     if(!gameMusicPlaying)
+    //     {
+    //         mainMenuMusic.Stop();
+    //         gameMusic.Play();
 
-            gameMusicPlaying = true;
-            mainMenuPlaying = false;
-        }
-    }
+    //         gameMusicPlaying = true;
+    //         mainMenuPlaying = false;
+    //     }
+    // }
 
 //<summary>
 //Method To play Attack Sounds

@@ -215,7 +215,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator EndOfLevelWaitRoutine()
     {
-        Debug.Log("hello");
+        
         yield return new WaitForSeconds(endOfLevelWaitTime);
         NextLevel();
     }

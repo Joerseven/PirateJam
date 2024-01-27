@@ -16,7 +16,7 @@ public class initializeGame : MonoBehaviour
         if(audioManagerCache == null) {
             Debug.LogError("Audio manager is NULL. Check Audio manager init.");
             }
-        audioManagerCache.StartMainMenuMusic();
+        // audioManagerCache.StartMainMenuMusic();
 
         animator = GetComponentInChildren<Animator>();
        
@@ -35,7 +35,7 @@ public class initializeGame : MonoBehaviour
     public void InitMainGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        audioManagerCache.StartGameMusic();
+        // audioManagerCache.StartGameMusic();
         
     }
     

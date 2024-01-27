@@ -25,7 +25,6 @@ public class InGameUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            UpdateHelpText("This is a test");
             animator.SetTrigger("ViewHelp");
 
         }
