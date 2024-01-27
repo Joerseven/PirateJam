@@ -46,6 +46,8 @@ public class Player : MonoBehaviour
     private Grid grid;
     
     private SwipeAnim swipeAnim;
+
+    private AudioManager am;
     private void Awake()
     {
         Instance = this;
@@ -61,7 +63,7 @@ public class Player : MonoBehaviour
         playerControls.Player.Enable();
 
         knockback = GetComponent<Knockback>();
-        
+        am = FindObjectOfType<AudioManager>();
     }
 
     private void Start()
@@ -153,7 +155,7 @@ public class Player : MonoBehaviour
         swingDirection = direction;
         StartCoroutine(Swing());
         
-        
+        am.PlayAttackSound(0);
         swipeAnim.PlaySwing(swingDirection);
     }
 

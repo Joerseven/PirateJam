@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,7 +25,6 @@ public class InGameUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            UpdateHelpText("This is a test");
             animator.SetTrigger("ViewHelp");
 
         }
